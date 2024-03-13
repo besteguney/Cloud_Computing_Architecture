@@ -5,11 +5,6 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-./mcperf -s $1 --loadonly
-./mcperf -s $1 -a $2 \
-    --noload -T 16 -C 4 -D 4 -Q 1000 -c 4 -t 5 -w 2\
-    --scan 5000:55000:5000 > results.txt
-
 # Creating the inference
 if [ $3 -eq 1]; then
     kubectl create -f interference/ibench-cpu.yaml
@@ -24,7 +19,10 @@ elif [ $3 eq 5]; then
 elif [ $3 eq 6]; then
     kubectl create -f interference/ibench-membw.yaml
 
-python3 results.py results.txt $3
+./mcperf -s $1 --loadonly
+./mcperf -s $1 -a $2 \
+    --noload -T 16 -C 4 -D 4 -Q 1000 -c 4 -t 5 -w 2\
+    --scan 5000:55000:5000 > results.txt
 
 # Deleting the inference pod
 if [ $3 -eq 1]; then
