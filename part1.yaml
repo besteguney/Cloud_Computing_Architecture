@@ -40,7 +40,7 @@ spec:
   networking:
     kubenet: {}
   nonMasqueradeCIDR: 100.64.0.0/10
-  project: cca-eth-2024-group-13-bgueney
+  project: cca-eth-2024-group-13
   sshAccess:
   - 0.0.0.0/0
   subnets:
