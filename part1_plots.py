@@ -11,6 +11,7 @@ RUNS = 3
 
 fig = plt.figure(figsize=(14,10))
 ax = fig.gca()
+ax.set_title("Latency by QPS averaged over 3 runs", fontsize=20)
 
 for marker_idx, type in enumerate(MEASUREMENT_TYPES):
     tail_arr = np.ndarray(shape=(11, 3), dtype=float)
@@ -34,15 +35,15 @@ for marker_idx, type in enumerate(MEASUREMENT_TYPES):
     file_df["Type"] = type
     ax.errorbar(x=file_df["QPS Mean"], y=file_df["p95 Mean"], xerr=file_df["QPS STD"], yerr=file_df["p95 SEM"], label=type, marker=MARKERS[marker_idx], markersize=8, capsize=2)
 
-ax.set_xlabel("Mean Queries per Second (QPS)", fontsize=16)
+ax.set_xlabel("Mean Queries per Second (QPS)", fontsize=16, labelpad=10)
 ax.set_ylabel("95th Percentile Latency in Miliseconds (ms)", fontsize=16)
 ax.legend(loc='upper right', fontsize=14)
 ax.grid(True, color='lightgray', linestyle='--', linewidth=1)
-ax.tick_params(labelsize=12)
+ax.tick_params(labelsize=18)
 ax.set_xlim(left=0, right=55100)
 ax.set_ylim(bottom=0, top=10)
 ax.set_yticks(range(0, 11, 2))
 ax.set_xticks(range(0, 55100, 5000))
 if not os.path.exists("./part1/plots/"):
     os.makedirs("./part1/plots")
-plt.savefig("./part1/plots/part1.png")
+plt.savefig("./part1/plots/part1.pdf")
