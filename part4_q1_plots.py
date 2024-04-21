@@ -41,7 +41,7 @@ ax.grid(True, color='lightgray', linestyle='--', linewidth=1)
 ax.tick_params(labelsize=18)
 ax.set_xlim(left=0, right=125000)
 ax.set_ylim(bottom=0, top=2.125)
-ax.set_xticks(range(0, 125001, 20000), labels=(f'{i}k' for i in range(0,121, 20)))
+ax.set_xticks(range(0, 125001, 25000), labels=(f'{i}k' for i in range(0,126, 25)))
 if not os.path.exists("./part4/q1/plots/"):
     os.makedirs("./part4/q1/plots")
 plt.savefig("./part4/q1/plots/part4_q1.pdf")
