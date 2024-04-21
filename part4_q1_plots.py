@@ -20,7 +20,7 @@ for marker_idx, type in enumerate(thread_core_counts):
         index = i+1
         file_path = f'{dir}/{type}_{index}.csv'
         curr_df = pd.read_csv(file_path, sep=",", header=0)
-        arr = curr_df[["p95", "target"]].to_numpy()
+        arr = curr_df[["p95", "QPS"]].to_numpy()
         for j in range(len(arr)):
             tail_arr[j][i] = arr[j][0] / 1000
             qps_arr[j][i] = arr[j][1]
