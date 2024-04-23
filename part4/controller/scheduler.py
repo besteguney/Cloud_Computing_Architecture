@@ -137,5 +137,21 @@ class Scheduler:
             print(f"ERROR: Trying to pause container {job.value}")
             return
 
+    def update_container(self, job:Job, cores):
+        try:
+            container = self.get_container(job)
+            container.reload()
+            if container.status != "exited":
+                self.logger_client.update_cores(job, cores=cores)
+                container.update(cpuset_cpus=cores)
+            else:
+                print(f"Container {job.value} already exited.")
+                return
+        except :
+            print(f"ERROR: Trying to update cores of container {job.value}")
+            return
+
 scheduler = Scheduler()
 scheduler.pause_container(Job.FERRET)
+scheduler.unpause_container(Job.FERRET)
+scheduler.update_container(Job.FERRET, cores="0-2")
