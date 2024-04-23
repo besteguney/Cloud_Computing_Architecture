@@ -35,7 +35,9 @@ class Scheduler:
 
     def get_container_status(self, container_name):
         try:
-            return self.docker_client.containers.get(container_name).status
+            container = self.docker_client.containers.get(container_name)
+            container.reload()
+            return container.status
         except docker.errors.NotFound:
             print(f"ERROR: Container not found")
 
@@ -46,6 +48,7 @@ class Scheduler:
     def get_container(self, job:Job):
         try:
             container = self.docker_client.containers.get(job.value)
+            container.reload()
             return container
         except docker.errors.NotFound as e:
             print(f"Container {job.value} not found.")
@@ -84,6 +87,7 @@ class Scheduler:
     def run_or_unpause_container(self, job:Job, cores, num_threads=1, detach=True, auto_remove=False):
         try:
             container = self.create_container(job=job, cores=cores, num_threads=num_threads, detach=detach, auto_remove=auto_remove)
+            container.reload()
         except docker.errors.APIError as e:
             print("ERROR: Trying to run a container {job}")
             print(e)
@@ -106,6 +110,7 @@ class Scheduler:
     def unpause_container(self, job:Job):
         try:
             container = self.get_container(job)
+            container.reload()
             if container.status == "running":
                 print(f"Container {job.value} already running. Aborting")
                 return
@@ -124,6 +129,7 @@ class Scheduler:
     def pause_container(self, job:Job):
         try:
             container = self.get_container(job)
+            container.reload()
             if container.status == "running" or container.status == "restarting":
                 self.logger_client.job_pause(job)
                 container.pause()
