@@ -43,13 +43,21 @@ class Scheduler:
         print(f"{job.value}")
         return f"./run -a run -S parsec -p {job.value} -i native -n {num_threads}"
 
-    def create_container(self, job: Job, cores, num_threads=1, detach=True, auto_remove=False):
+    def get_container(self, job:Job):
         try:
             container = self.docker_client.containers.get(job.value)
             return container
+        except docker.errors.NotFound as e:
+            print(f"Container {job.value} not found.")
+            print(e)
+            return
+
+    def create_container(self, job: Job, cores, num_threads=1, detach=True, auto_remove=False):
+        try:
+            container = self.get_container(job)
+            return container
         except docker.errors.NotFound:
             print(f"Container {job.value} does not exist. Creating the container")
-            pass
         try:
             self.docker_client.images.get(self.images[job])
         except docker.errors.ImageNotFound:
@@ -95,5 +103,33 @@ class Scheduler:
         print("Running container {job.value}")
         return
 
+    def unpause_container(self, job:Job):
+        try:
+            container = self.get_container(job)
+            if container.status == "running":
+                print(f"Container {job.value} already running. Aborting")
+                return
+            if container.status == "paused":
+                self.logger_client.job_unpause(job)
+                container.unpause()
+            else:
+                print(f"Container {job.value} is not suitable for unpausing. Current status: {container.status}")
+                return
+            print(f"Unpausing container: {job.value}")
+            return
+        except docker.errors.NotFound:
+            print(f"Container {job.value} does not exist. Cannot unpause this container. Aborting")
+            return
+
+    def pause_container(self, job:Job):
+        try:
+            container = self.get_container(job)
+            if container.status == "running" or container.status == "restarting":
+                self.logger_client.job_pause(job)
+                container.pause()
+        except:
+            print(f"ERROR: Trying to pause container {job.value}")
+            return
+
 scheduler = Scheduler()
-scheduler.run_or_unpause_container(Job.FERRET, cores="0")
+scheduler.pause_container(Job.FERRET)
