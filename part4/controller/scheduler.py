@@ -87,7 +87,7 @@ class Scheduler:
             self.logger_client.job_unpause(job)
             container.unpause()
         elif container.status == "created":
-            self.logger_client.job_start(job, initial_cores=list(cores), initial_threads=list(num_threads))
+            self.logger_client.job_start(job, initial_cores=list(cores), initial_threads=num_threads)
             container.start()
         else:
             print(f"Container {job.value} is not suitable for running or unpausing. Current status: {container.status}")
@@ -96,4 +96,4 @@ class Scheduler:
         return
 
 scheduler = Scheduler()
-scheduler.run_or_unpause_container(Job.BLACKSCHOLES, cores="0")
+scheduler.run_or_unpause_container(Job.FERRET, cores="0")
