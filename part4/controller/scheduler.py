@@ -73,16 +73,27 @@ class Scheduler:
         container.reload()
         return container
 
-    def run_container(self, job:Job, cores, num_threads=1, detach=True, auto_remove=False):
+    def run_or_unpause_container(self, job:Job, cores, num_threads=1, detach=True, auto_remove=False):
         try:
             container = self.create_container(job=job, cores=cores, num_threads=num_threads, detach=detach, auto_remove=auto_remove)
         except docker.errors.APIError as e:
             print("ERROR: Trying to run a container {job}")
             print(e)
             return
-        container.start()
-        print("Running container {job}")
+        if container.status == "running":
+            print(f"Container {job.value} already running. Aborting")
+            return
+        if container.status == "paused":
+            self.logger_client.job_unpause(job)
+            container.unpause()
+        elif container.status == "created":
+            self.logger_client.job_start(job, initial_cores=list(cores), initial_threads=list(num_threads))
+            container.start()
+        else:
+            print(f"Container {job.value} is not suitable for running or unpausing. Current status: {container.status}")
+            return
+        print("Running container {job.value}")
         return
 
 scheduler = Scheduler()
-scheduler.run_container(Job.BLACKSCHOLES, cores="0")
+scheduler.run_or_unpause_container(Job.BLACKSCHOLES, cores="0")
