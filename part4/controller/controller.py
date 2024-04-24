@@ -1,19 +1,20 @@
-from memcache_scheduler import MemcacheScheduler
+from memcache_handler import MemcacheHandler
 from scheduler_logger import Job, SchedulerLogger
-from scheduler import Scheduler
+from docker_scheduler import DockerScheduler
 from collections import deque
 from time import sleep
 
 def main():
-    #scheduler = Scheduler()
-    memcache_scheduler = MemcacheScheduler()
-    scheduler = Scheduler()
+    memcache_scheduler = MemcacheHandler()
+    docker_scheduler = DockerScheduler()
 
-    while True:
-        #print('icerde')
+    while not docker_scheduler.is_schedule_done():
         available_cores = memcache_scheduler.adapt_cpu_usage()
-        scheduler.run_schedule(available_cores)
-        sleep(0.5)
+        docker_scheduler.handle_core_usage_2(available_cores)
+        sleep(1)
+    
+    docker_scheduler.remove_containers()
+    memcache_scheduler.set_cpu_affinity('0-1')
 
 if __name__ == "__main__":
     main()

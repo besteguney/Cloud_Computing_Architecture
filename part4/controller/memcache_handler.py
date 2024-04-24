@@ -1,15 +1,17 @@
 import psutil
 from time import sleep
 import subprocess
+from scheduler_logger import Job, SchedulerLogger
 
-class MemcacheScheduler:
+class MemcacheHandler:
     def __init__(self):
         self.process_id = self.get_process_id()
+        self.scheduler_logger = SchedulerLogger()
         self.cpu_list = []
 
         # Initialize memcache.
         self.set_cpu_affinity("0")
-        return
+        self.scheduler_logger.job_start(Job.MEMCACHED, ['0'], 2)
     
     def get_process_id(self)->int:
         pid = None
@@ -66,12 +68,14 @@ class MemcacheScheduler:
             current_usage = current_usage / 2
 
         # If we are using 2 core and average CPU usage is <= 50% assign one core
-        if len(self.cpu_list) == 2 and current_usage <= 50:
+        if len(self.cpu_list) == 2 and current_usage <= 75:
             available_cores = 3
             self.set_cpu_affinity("0")
-        elif len(self.cpu_list) == 1 and current_usage >= 80:
+            self.scheduler_logger.update_cores(Job.MEMCACHED, ['0'])
+        elif len(self.cpu_list) == 1 and current_usage > 90:
             available_cores = 2
             self.set_cpu_affinity("0-1")
+            self.scheduler_logger.update_cores(Job.MEMCACHED, ['0-1'])
 
         return available_cores
     
