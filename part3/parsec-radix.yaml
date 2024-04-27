@@ -13,6 +13,9 @@ spec:
         imagePullPolicy: Always
         command: ["/bin/sh"]
         args: ["-c", "./run -a run -S splash2x -p radix -i native -n 8"]
+        resources:
+          limits:
+            cpu: "0.75"
       restartPolicy: Never
       nodeSelector:
-        cca-project-nodetype: "parsec"
+        cca-project-nodetype: "node-a-2core"

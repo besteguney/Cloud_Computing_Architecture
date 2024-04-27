@@ -13,6 +13,9 @@ spec:
         imagePullPolicy: Always
         command: ["/bin/sh"]
         args: ["-c", "./run -a run -S parsec -p freqmine -i native -n 8"]
+        resources:
+          limits:
+            cpu: "3.75"
       restartPolicy: Never
       nodeSelector:
-        cca-project-nodetype: "parsec"
+        cca-project-nodetype: "node-b-4core"
