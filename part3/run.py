@@ -43,21 +43,21 @@ def info(msg):
 # ]
 
 # 8-CORE NODE = [
-#     [FREQMINE, FERRET]
+#     [FREQMINE, (VIPS, RADIX)]
 # ]
 
 # 4-CORE NODE = [
-#     [CANNEAL, VIPS, DEDUP, RADIX]
+#     [CANNEAL, DEDUP]
+#     [FERRET]
 # ]
 
 dependents = {
-    FREQMINE: FERRET,
-    CANNEAL: VIPS,
+    FREQMINE: VIPS,
     VIPS: DEDUP,
-    DEDUP: RADIX
+    DEDUP: RADIX,
 }
 
-start_jobs = [BLACKSCHOLES, FREQMINE, CANNEAL]
+start_jobs = [BLACKSCHOLES, FREQMINE, CANNEAL, FERRET]
 
 def run(cmd, log=True):
     out = subprocess.run(cmd, capture_output=True)
@@ -71,10 +71,6 @@ def run(cmd, log=True):
 
     return stdout
 
-def create_job(job):
-    info(f"Creating job {job}")
-    run(["kubectl", "create", "-f", get_yaml(job)])
-
 def clear():
     run(["kubectl", "delete", "jobs", "--all"])
 
@@ -84,13 +80,17 @@ class JobScheduler:
         self.iter_counter = 0
 
         for job in start_jobs:
-            create_job(job)
+            self.create_job(job)
+
+    def create_job(self, job):
+        info(f"Creating job {job} at {datetime.datetime.now()}")
+        run(["kubectl", "create", "-f", get_yaml(job)])
 
     def finish_job(self, job):
-        print(f"Job {job} finished.")
+        print(f"Job {job} finished at {datetime.datetime.now()}.")
         self.finished_jobs.append(job)
         if job in dependents:
-            create_job(dependents[job])
+            self.create_job(dependents[job])
 
     def check(self):
         if self.iter_counter % 10 == 0:
@@ -102,7 +102,7 @@ class JobScheduler:
         is_finished = True
 
         for (job, status) in pod_stats.items():
-            if status == "Completed": 
+            if status: 
                 if job not in self.finished_jobs:
                     self.finish_job(job)
             else:
@@ -115,15 +115,14 @@ class JobScheduler:
 
 def get_pod_stats():
     pod_stats = {}
-    out = run(["kubectl", "get", "pods", "-o", "wide"], log=False)
+    out = run(["kubectl", "get", "jobs"], log=False)
 
     for job in ALL_JOBS:
-        match = re.findall(re.compile(job + r"[a-zA-Z-0-9]+\s+\d+\/\d+\s+(\w+)"), out)
-
+        match = re.findall(re.compile(job + r"\s+(\d+)\/"), out)
         if len(match) > 0:
-            pod_stats[job] = match[0]
+            pod_stats[job] = int(match[0]) == 1
         else:
-            pod_stats[job] = "Not started"
+            pod_stats[job] = False
     
     return pod_stats    
 

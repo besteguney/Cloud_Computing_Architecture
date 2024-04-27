@@ -55,8 +55,8 @@ memcached-11211   LoadBalancer   100.71.137.231   35.246.183.158   11211:31641/T
 On client-a:  ./mcperf -T 2 -A
 On client-b:  ./mcperf -T 4 -A
 On client-measure:  
-./mcperf -s 100.96.6.2 --loadonly &&
-./mcperf -s 100.96.6.2 -a 10.0.16.2 -a 10.0.16.6 \
+./mcperf -s 100.69.194.112 --loadonly &&
+./mcperf -s 100.69.194.112 -a 10.0.16.7 -a 10.0.16.8 \
 --noload -T 6 -C 4 -D 4 -Q 1000 -c 4 -t 10 \
 --scan 30000:30500:5
 

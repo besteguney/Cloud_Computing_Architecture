@@ -78,11 +78,12 @@ Attempt 5:
 # ]
 
 # 8-CORE NODE = [
-#     [FREQMINE, FERRET]
+#     [FREQMINE, VIPS, DEDUP, RADIX]
 # ]
 
 # 4-CORE NODE = [
-#     [CANNEAL, VIPS, DEDUP, RADIX]
+#     [CANNEAL]
+#     [FERRET]
 # ]
 
 Job:  memcached
@@ -132,3 +133,34 @@ Job time:  0:00:22
 Job:  parsec-vips
 Job time:  0:00:25
 Total time: 0:02:59
+
+Attempt 9:
+# 2-CORE NODE = [
+#     [BLACKSCHOLES]
+# ]
+
+# 8-CORE NODE = [
+#     [FREQMINE, VIPS, DEDUP, RADIX]
+# ]
+
+# 4-CORE NODE = [
+#     [CANNEAL]
+#     [FERRET]
+# ]
+
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:59
+Job:  parsec-canneal
+Job time:  0:01:57
+Job:  parsec-dedup
+Job time:  0:00:18
+Job:  parsec-ferret
+Job time:  0:02:35
+Job:  parsec-freqmine
+Job time:  0:01:43
+Job:  parsec-radix
+Job time:  0:00:21
+Job:  parsec-vips
+Job time:  0:00:26
+Total time: 0:04:27
