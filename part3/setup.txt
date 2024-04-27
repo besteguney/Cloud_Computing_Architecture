@@ -20,9 +20,9 @@ node-c-8core-rcjf            Ready    node            98s     v1.28.6   10.0.16.
 
 UPDATE MCPERF:
 For each mcperf do:
-gcloud compute ssh --ssh-key-file ~/.ssh/cloud-computing ubuntu@client-agent-a-09c2 --zone europe-west3-a
-gcloud compute ssh --ssh-key-file ~/.ssh/cloud-computing ubuntu@client-agent-b-bj0m --zone europe-west3-a
-gcloud compute ssh --ssh-key-file ~/.ssh/cloud-computing ubuntu@client-measure-pl9s --zone europe-west3-a
+gcloud compute ssh --ssh-key-file ~/.ssh/cloud-computing ubuntu@client-agent-a-ljn8  --zone europe-west3-a
+gcloud compute ssh --ssh-key-file ~/.ssh/cloud-computing ubuntu@client-agent-b-9t23 --zone europe-west3-a
+gcloud compute ssh --ssh-key-file ~/.ssh/cloud-computing ubuntu@client-measure-gzg5 --zone europe-west3-a
 
 and then:
 sudo sh -c "echo deb-src http://europe-west3.gce.archive.ubuntu.com/ubuntu/ jammy main restricted >> /etc/apt/sources.list" &&
@@ -36,7 +36,7 @@ make
 In memcache.yaml, set the appropriate label where we want to start the service:
 cca-project-nodetype: "node-a-2core"
 and then run: 
-kubectl create -f memcache-t1-cpuset.yaml
+kubectl create -f memcached.yaml
 
 lstampfl@Laurenzs-MacBook-Pro part3 % kubectl get pods -o wide                 
 NAME        READY   STATUS    RESTARTS   AGE   IP           NODE                NOMINATED NODE   READINESS GATES
@@ -55,8 +55,8 @@ memcached-11211   LoadBalancer   100.71.137.231   35.246.183.158   11211:31641/T
 On client-a:  ./mcperf -T 2 -A
 On client-b:  ./mcperf -T 4 -A
 On client-measure:  
-./mcperf -s 100.96.1.8 --loadonly
-./mcperf -s 100.96.1.8 -a 10.0.16.3 -a 10.0.16.7 \
+./mcperf -s 100.96.6.2 --loadonly &&
+./mcperf -s 100.96.6.2 -a 10.0.16.2 -a 10.0.16.6 \
 --noload -T 6 -C 4 -D 4 -Q 1000 -c 4 -t 10 \
 --scan 30000:30500:5
 

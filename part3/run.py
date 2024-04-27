@@ -24,24 +24,40 @@ RUN_DIR = f"RUN{RUN}"
 LOG_FILE = f"{RUN_DIR}/stdout.log"
 PODS_OUT = f"{RUN_DIR}/results.json"
 
-open(LOG_FILE, "w").close()
-logging.basicConfig(filename=LOG_FILE, encoding='utf-8', level=logging.DEBUG)
+root = logging.getLogger()
+root.setLevel(logging.DEBUG)
+
+# stdout_handler = logging.StreamHandler()
+# stdout_handler.setLevel(logging.DEBUG)
+# root.addHandler(stdout_handler)
+
+file_handler = logging.FileHandler(filename=LOG_FILE, encoding='utf-8')
+file_handler.setLevel(logging.DEBUG)
+root.addHandler(file_handler)
 
 def info(msg):
     print(f"INFO: {msg}")
 
 # self.node_a_2 = [
-#     [BLACKSCHOLES, RADIX]
+#     [BLACKSCHOLES]
 # ]
 
-# self.node_e_2 = [
-#     [FREQMINE],
-#     [FERRET, VIPS]
+# self.node_e_8 = [
+#     [FREQMINE]
+#     [FERRET, RADIX]
 # ]
 
 # self.node_b_4 = [
-#     [CANNEAL, DEDUP]
+#     [CANNEAL, VIPS, DEDUP]
 # ]
+
+dependents = {
+    FERRET: RADIX,
+    CANNEAL: VIPS,
+    VIPS: DEDUP
+}
+
+start_jobs = [BLACKSCHOLES, FREQMINE, FERRET, CANNEAL]
 
 def run(cmd, log=True):
     out = subprocess.run(cmd, capture_output=True)
@@ -66,23 +82,18 @@ class JobScheduler:
     def __init__(self) -> None:
         self.finished_jobs = []
         self.iter_counter = 0
-        create_job(BLACKSCHOLES)
-        create_job(FREQMINE)
-        create_job(FERRET)
-        create_job(CANNEAL)
+
+        for job in start_jobs:
+            create_job(job)
 
     def finish_job(self, job):
         print(f"Job {job} finished.")
         self.finished_jobs.append(job)
-        if job == BLACKSCHOLES:
-            create_job(RADIX)
-        elif job == FERRET:
-            create_job(VIPS)
-        elif job == CANNEAL:
-            create_job(DEDUP)
+        if job in dependents:
+            create_job(dependents[job])
 
     def check(self):
-        if self.iter_counter % 15 == 0:
+        if self.iter_counter % 10 == 0:
             # Just to get some info in the log
             run(["kubectl", "get", "jobs"])
             run(["kubectl", "get", "pods", "-o", "wide"])
@@ -90,12 +101,14 @@ class JobScheduler:
         pod_stats = get_pod_stats()
         is_finished = True
 
-        for (job, status) in pod_stats:
-            if status == "Succeeded": 
+        for (job, status) in pod_stats.items():
+            if status == "Completed": 
                 if job not in self.finished_jobs:
                     self.finish_job(job)
             else:
                 is_finished = False
+
+        self.iter_counter += 1
         
         return is_finished
 
@@ -105,7 +118,7 @@ def get_pod_stats():
     out = run(["kubectl", "get", "pods", "-o", "wide"], log=False)
 
     for job in ALL_JOBS:
-        match = re.findall(re.compile(job + r"[a-zA-Z-]+\s+\d+\/\d+\s+(\w+)"), out)
+        match = re.findall(re.compile(job + r"[a-zA-Z-0-9]+\s+\d+\/\d+\s+(\w+)"), out)
 
         if len(match) > 0:
             pod_stats[job] = match[0]
@@ -127,4 +140,4 @@ info(f"Finished at {end} with duration {end - start}")
 with open(PODS_OUT, 'w+') as f:
     subprocess.run(["kubectl", "get", "pods", "-o", "json"], stdout=f)
 
-# clear()
+clear()
