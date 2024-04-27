@@ -67,3 +67,38 @@ Job time:  0:00:17
 Job:  parsec-vips
 Job time:  0:00:29
 Total time: 0:03:14
+
+
+
+
+
+
+
+# 2-CORE NODE = [
+#     [BLACKSCHOLES]
+# ]
+
+# 8-CORE NODE = [
+#     [FREQMINE, FERRET]
+# ]
+
+# 4-CORE NODE = [
+#     [CANNEAL, VIPS, DEDUP, RADIX]
+# ]
+
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:15
+Job:  parsec-canneal
+Job time:  0:01:11
+Job:  parsec-dedup
+Job time:  0:00:16
+Job:  parsec-ferret
+Job time:  0:01:14
+Job:  parsec-freqmine
+Job time:  0:01:36
+Job:  parsec-radix
+Job time:  0:00:10
+Job:  parsec-vips
+Job time:  0:00:29
+Total time: 0:02:53

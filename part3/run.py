@@ -39,25 +39,25 @@ def info(msg):
     print(f"INFO: {msg}")
 
 # 2-CORE NODE = [
-#     [BLACKSCHOLES]
+#     [BLACKSCHOLES,]
 # ]
 
 # 8-CORE NODE = [
-#     [CANNEAL, DEDUP]
-#     [FERRET, RADIX]
+#     [FREQMINE, FERRET]
 # ]
 
 # 4-CORE NODE = [
-#     [FREQMINE, VIPS]
+#     [CANNEAL, VIPS, RADIX, DEDUP]
 # ]
 
 dependents = {
-    CANNEAL: DEDUP,
-    FERRET: RADIX,
-    FREQMINE: VIPS
+    FREQMINE: FERRET,
+    CANNEAL: VIPS,
+    VIPS: RADIX,
+    RADIX: DEDUP
 }
 
-start_jobs = [BLACKSCHOLES, FREQMINE, FERRET, CANNEAL]
+start_jobs = [BLACKSCHOLES, FREQMINE, CANNEAL]
 
 def run(cmd, log=True):
     out = subprocess.run(cmd, capture_output=True)
