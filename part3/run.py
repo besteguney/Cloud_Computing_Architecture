@@ -39,7 +39,7 @@ def info(msg):
     print(f"INFO: {msg}")
 
 # 2-CORE NODE = [
-#     [BLACKSCHOLES,]
+#     [BLACKSCHOLES]
 # ]
 
 # 8-CORE NODE = [
@@ -47,14 +47,14 @@ def info(msg):
 # ]
 
 # 4-CORE NODE = [
-#     [CANNEAL, VIPS, RADIX, DEDUP]
+#     [CANNEAL, VIPS, DEDUP, RADIX]
 # ]
 
 dependents = {
     FREQMINE: FERRET,
     CANNEAL: VIPS,
-    VIPS: RADIX,
-    RADIX: DEDUP
+    VIPS: DEDUP,
+    DEDUP: RADIX
 }
 
 start_jobs = [BLACKSCHOLES, FREQMINE, CANNEAL]
