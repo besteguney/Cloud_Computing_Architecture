@@ -1417,3 +1417,210 @@ job.batch "parsec-ferret" deleted
 job.batch "parsec-freqmine" deleted
 job.batch "parsec-radix" deleted
 job.batch "parsec-vips" deleted
+CMD OUT: job.batch/parsec-blackscholes created
+CMD OUT: job.batch/parsec-freqmine created
+CMD OUT: job.batch/parsec-canneal created
+CMD OUT: job.batch/parsec-ferret created
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   0/1           0s         0s
+parsec-canneal        0/1           0s         0s
+parsec-ferret         0/1           0s         0s
+parsec-freqmine       0/1           0s         0s
+CMD OUT: NAME                        READY   STATUS              RESTARTS   AGE   IP           NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running             0          50m   100.96.3.2   node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   0/1     ContainerCreating   0          0s    <none>       node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        0/1     ContainerCreating   0          0s    <none>       node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         0/1     ContainerCreating   0          0s    <none>       node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       0/1     ContainerCreating   0          0s    <none>       node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   0/1           12s        12s
+parsec-canneal        0/1           12s        12s
+parsec-ferret         0/1           12s        12s
+parsec-freqmine       0/1           12s        12s
+CMD OUT: NAME                        READY   STATUS    RESTARTS   AGE   IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running   0          50m   100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   1/1     Running   0          12s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        1/1     Running   0          12s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running   0          12s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       1/1     Running   0          12s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   0/1           23s        23s
+parsec-canneal        0/1           23s        23s
+parsec-ferret         0/1           23s        23s
+parsec-freqmine       0/1           23s        23s
+CMD OUT: NAME                        READY   STATUS    RESTARTS   AGE   IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running   0          51m   100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   1/1     Running   0          23s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        1/1     Running   0          23s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running   0          23s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       1/1     Running   0          23s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   0/1           35s        35s
+parsec-canneal        0/1           35s        35s
+parsec-ferret         0/1           35s        35s
+parsec-freqmine       0/1           35s        35s
+CMD OUT: NAME                        READY   STATUS    RESTARTS   AGE   IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running   0          51m   100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   1/1     Running   0          35s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        1/1     Running   0          35s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running   0          35s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       1/1     Running   0          35s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   0/1           47s        47s
+parsec-canneal        0/1           47s        47s
+parsec-ferret         0/1           47s        47s
+parsec-freqmine       0/1           47s        47s
+CMD OUT: NAME                        READY   STATUS    RESTARTS   AGE   IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running   0          51m   100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   1/1     Running   0          47s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        1/1     Running   0          47s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running   0          47s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       1/1     Running   0          47s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   0/1           58s        58s
+parsec-canneal        0/1           58s        58s
+parsec-ferret         0/1           58s        58s
+parsec-freqmine       0/1           58s        58s
+CMD OUT: NAME                        READY   STATUS    RESTARTS   AGE   IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running   0          51m   100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   1/1     Running   0          58s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        1/1     Running   0          58s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running   0          58s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       1/1     Running   0          58s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   0/1           69s        69s
+parsec-canneal        0/1           69s        69s
+parsec-ferret         0/1           69s        69s
+parsec-freqmine       0/1           69s        69s
+CMD OUT: NAME                        READY   STATUS    RESTARTS   AGE   IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running   0          51m   100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   1/1     Running   0          69s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        1/1     Running   0          69s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running   0          69s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       1/1     Running   0          69s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   0/1           80s        80s
+parsec-canneal        0/1           80s        80s
+parsec-ferret         0/1           80s        80s
+parsec-freqmine       0/1           80s        80s
+CMD OUT: NAME                        READY   STATUS      RESTARTS   AGE   IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running     0          51m   100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   0/1     Completed   0          81s   <none>        node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        1/1     Running     0          81s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running     0          81s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       1/1     Running     0          81s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   1/1           81s        92s
+parsec-canneal        0/1           92s        92s
+parsec-ferret         0/1           92s        92s
+parsec-freqmine       0/1           92s        92s
+CMD OUT: NAME                        READY   STATUS      RESTARTS   AGE   IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running     0          52m   100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   0/1     Completed   0          92s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        1/1     Running     0          92s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running     0          92s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       1/1     Running     0          92s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   1/1           81s        103s
+parsec-canneal        0/1           103s       103s
+parsec-ferret         0/1           103s       103s
+parsec-freqmine       0/1           103s       103s
+CMD OUT: NAME                        READY   STATUS      RESTARTS   AGE    IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running     0          52m    100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   0/1     Completed   0          103s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        1/1     Running     0          103s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running     0          103s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       1/1     Running     0          103s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+CMD OUT: job.batch/parsec-vips created
+CMD OUT: job.batch/parsec-radix created
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   1/1           81s        114s
+parsec-canneal        0/1           114s       114s
+parsec-ferret         0/1           114s       114s
+parsec-freqmine       1/1           107s       114s
+parsec-radix          0/1           6s         6s
+parsec-vips           0/1           6s         6s
+CMD OUT: NAME                        READY   STATUS      RESTARTS   AGE    IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running     0          52m    100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   0/1     Completed   0          115s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        1/1     Running     0          115s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running     0          115s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       0/1     Completed   0          115s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+parsec-radix-ch8q7          1/1     Running     0          7s     100.96.4.24   node-c-8core-bwzc   <none>           <none>
+parsec-vips-vgr4h           1/1     Running     0          7s     100.96.4.23   node-c-8core-bwzc   <none>           <none>
+CMD OUT: job.batch/parsec-dedup created
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   1/1           81s        2m6s
+parsec-canneal        1/1           2m2s       2m6s
+parsec-dedup          0/1           2s         2s
+parsec-ferret         0/1           2m6s       2m6s
+parsec-freqmine       1/1           107s       2m6s
+parsec-radix          0/1           18s        18s
+parsec-vips           0/1           18s        18s
+CMD OUT: NAME                        READY   STATUS      RESTARTS   AGE    IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running     0          52m    100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   0/1     Completed   0          2m6s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        0/1     Completed   0          2m6s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-dedup-49k7f          1/1     Running     0          2s     100.96.1.18   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running     0          2m6s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       0/1     Completed   0          2m6s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+parsec-radix-ch8q7          1/1     Running     0          18s    100.96.4.24   node-c-8core-bwzc   <none>           <none>
+parsec-vips-vgr4h           1/1     Running     0          18s    100.96.4.23   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   1/1           81s        2m17s
+parsec-canneal        1/1           2m2s       2m17s
+parsec-dedup          0/1           13s        13s
+parsec-ferret         0/1           2m17s      2m17s
+parsec-freqmine       1/1           107s       2m17s
+parsec-radix          0/1           29s        29s
+parsec-vips           0/1           29s        29s
+CMD OUT: NAME                        READY   STATUS      RESTARTS   AGE     IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running     0          52m     100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   0/1     Completed   0          2m17s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        0/1     Completed   0          2m17s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-dedup-49k7f          1/1     Running     0          13s     100.96.1.18   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running     0          2m17s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       0/1     Completed   0          2m17s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+parsec-radix-ch8q7          1/1     Running     0          29s     100.96.4.24   node-c-8core-bwzc   <none>           <none>
+parsec-vips-vgr4h           1/1     Running     0          29s     100.96.4.23   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   1/1           81s        2m28s
+parsec-canneal        1/1           2m2s       2m28s
+parsec-dedup          0/1           24s        24s
+parsec-ferret         0/1           2m28s      2m28s
+parsec-freqmine       1/1           107s       2m28s
+parsec-radix          1/1           36s        40s
+parsec-vips           0/1           40s        40s
+CMD OUT: NAME                        READY   STATUS      RESTARTS   AGE     IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running     0          53m     100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   0/1     Completed   0          2m29s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        0/1     Completed   0          2m29s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-dedup-49k7f          0/1     Completed   0          25s     <none>        node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running     0          2m29s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       0/1     Completed   0          2m29s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+parsec-radix-ch8q7          0/1     Completed   0          41s     100.96.4.24   node-c-8core-bwzc   <none>           <none>
+parsec-vips-vgr4h           1/1     Running     0          41s     100.96.4.23   node-c-8core-bwzc   <none>           <none>
+CMD OUT: NAME                  COMPLETIONS   DURATION   AGE
+parsec-blackscholes   1/1           81s        2m40s
+parsec-canneal        1/1           2m2s       2m40s
+parsec-dedup          1/1           25s        36s
+parsec-ferret         0/1           2m40s      2m40s
+parsec-freqmine       1/1           107s       2m40s
+parsec-radix          1/1           36s        52s
+parsec-vips           1/1           48s        52s
+CMD OUT: NAME                        READY   STATUS      RESTARTS   AGE     IP            NODE                NOMINATED NODE   READINESS GATES
+memcached                   1/1     Running     0          53m     100.96.3.2    node-a-2core-5kjj   <none>           <none>
+parsec-blackscholes-g7zff   0/1     Completed   0          2m40s   100.96.3.9    node-a-2core-5kjj   <none>           <none>
+parsec-canneal-djl26        0/1     Completed   0          2m40s   100.96.1.16   node-b-4core-436t   <none>           <none>
+parsec-dedup-49k7f          0/1     Completed   0          36s     100.96.1.18   node-b-4core-436t   <none>           <none>
+parsec-ferret-wlwf8         1/1     Running     0          2m40s   100.96.1.17   node-b-4core-436t   <none>           <none>
+parsec-freqmine-5ngc9       0/1     Completed   0          2m40s   100.96.4.22   node-c-8core-bwzc   <none>           <none>
+parsec-radix-ch8q7          0/1     Completed   0          52s     100.96.4.24   node-c-8core-bwzc   <none>           <none>
+parsec-vips-vgr4h           0/1     Completed   0          52s     100.96.4.23   node-c-8core-bwzc   <none>           <none>
+CMD OUT: job.batch "parsec-blackscholes" deleted
+job.batch "parsec-canneal" deleted
+job.batch "parsec-dedup" deleted
+job.batch "parsec-ferret" deleted
+job.batch "parsec-freqmine" deleted
+job.batch "parsec-radix" deleted
+job.batch "parsec-vips" deleted

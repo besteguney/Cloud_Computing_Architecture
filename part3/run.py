@@ -52,9 +52,8 @@ def info(msg):
 # ]
 
 dependents = {
-    FREQMINE: VIPS,
-    VIPS: DEDUP,
-    DEDUP: RADIX,
+    FREQMINE: [VIPS, RADIX],
+    CANNEAL: [DEDUP],
 }
 
 start_jobs = [BLACKSCHOLES, FREQMINE, CANNEAL, FERRET]
@@ -90,7 +89,8 @@ class JobScheduler:
         print(f"Job {job} finished at {datetime.datetime.now()}.")
         self.finished_jobs.append(job)
         if job in dependents:
-            self.create_job(dependents[job])
+            for dependent in dependents[job]:
+                self.create_job(dependent)
 
     def check(self):
         if self.iter_counter % 10 == 0:
