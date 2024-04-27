@@ -19,7 +19,7 @@ ALL_JOBS = [BLACKSCHOLES, CANNEAL, DEDUP, FERRET, RADIX, VIPS, FREQMINE]
 def get_yaml(job):
     return job + ".yaml"
 
-RUN = 1
+RUN = 2
 RUN_DIR = f"RUN{RUN}"
 LOG_FILE = f"{RUN_DIR}/stdout.log"
 PODS_OUT = f"{RUN_DIR}/results.json"
