@@ -32,3 +32,38 @@ Job time:  0:00:16
 Job:  parsec-vips
 Job time:  0:00:47
 Total time: 0:03:20
+
+
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:55
+Job:  parsec-canneal
+Job time:  0:01:11
+Job:  parsec-dedup
+Job time:  0:00:12
+Job:  parsec-ferret
+Job time:  0:02:29
+Job:  parsec-freqmine
+Job time:  0:02:59
+Job:  parsec-radix
+Job time:  0:00:16
+Job:  parsec-vips
+Job time:  0:00:29
+Total time: 0:02:59
+
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:15
+Job:  parsec-canneal
+Job time:  0:02:55
+Job:  parsec-dedup
+Job time:  0:00:16
+Job:  parsec-ferret
+Job time:  0:02:47
+Job:  parsec-freqmine
+Job time:  0:02:08
+Job:  parsec-radix
+Job time:  0:00:17
+Job:  parsec-vips
+Job time:  0:00:29
+Total time: 0:03:14

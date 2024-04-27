@@ -38,23 +38,23 @@ root.addHandler(file_handler)
 def info(msg):
     print(f"INFO: {msg}")
 
-# self.node_a_2 = [
+# 2-CORE NODE = [
 #     [BLACKSCHOLES]
 # ]
 
-# self.node_e_8 = [
-#     [FREQMINE]
+# 8-CORE NODE = [
+#     [CANNEAL, DEDUP]
 #     [FERRET, RADIX]
 # ]
 
-# self.node_b_4 = [
-#     [CANNEAL, VIPS, DEDUP]
+# 4-CORE NODE = [
+#     [FREQMINE, VIPS]
 # ]
 
 dependents = {
+    CANNEAL: DEDUP,
     FERRET: RADIX,
-    CANNEAL: VIPS,
-    VIPS: DEDUP
+    FREQMINE: VIPS
 }
 
 start_jobs = [BLACKSCHOLES, FREQMINE, FERRET, CANNEAL]
