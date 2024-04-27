@@ -22,6 +22,7 @@ def get_yaml(job):
 RUN = 1
 RUN_DIR = f"RUN{RUN}"
 LOG_FILE = f"{RUN_DIR}/stdout.log"
+PODS_OUT = f"{RUN_DIR}/results.json"
 
 open(LOG_FILE, "w").close()
 logging.basicConfig(filename=LOG_FILE, encoding='utf-8', level=logging.DEBUG)
@@ -122,5 +123,8 @@ while not job_scheduler.check():
 
 end = datetime.datetime.now()
 info(f"Finished at {end} with duration {end - start}")
+
+with open(PODS_OUT, 'w+') as f:
+    subprocess.run(["kubectl", "get", "pods", "-o", "json"], stdout=f)
 
 # clear()
