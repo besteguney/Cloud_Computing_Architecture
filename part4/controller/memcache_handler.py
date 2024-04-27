@@ -4,14 +4,16 @@ import subprocess
 from scheduler_logger import Job, SchedulerLogger
 
 class MemcacheHandler:
-    def __init__(self):
+    def __init__(self, scheduler_logger: SchedulerLogger):
         self.process_id = self.get_process_id()
-        self.scheduler_logger = SchedulerLogger()
-        self.cpu_list = []
+        print(f'current process is {self.process_id}')
+        self.scheduler_logger = scheduler_logger
+        self.cpu_list = [0,1]
 
         # Initialize memcache.
-        self.set_cpu_affinity("0")
-        self.scheduler_logger.job_start(Job.MEMCACHED, ['0'], 2)
+        self.set_cpu_affinity("0-1")
+        print(' jdhfdjshf jfdsjfjds dhfjsd ')
+        self.scheduler_logger.job_start(Job.MEMCACHED, ['0-1'], 2)
     
     def get_process_id(self)->int:
         pid = None
@@ -68,14 +70,16 @@ class MemcacheHandler:
             current_usage = current_usage / 2
 
         # If we are using 2 core and average CPU usage is <= 50% assign one core
-        if len(self.cpu_list) == 2 and current_usage <= 75:
+        if len(self.cpu_list) == 2 and current_usage <= 100:
             available_cores = 3
             self.set_cpu_affinity("0")
             self.scheduler_logger.update_cores(Job.MEMCACHED, ['0'])
+            self.cpu_list = [0]
         elif len(self.cpu_list) == 1 and current_usage > 90:
             available_cores = 2
             self.set_cpu_affinity("0-1")
             self.scheduler_logger.update_cores(Job.MEMCACHED, ['0-1'])
+            self.cpu_list = [0, 1]
 
         return available_cores
     
