@@ -103,62 +103,60 @@ def print_table():
 """
     print(table)
 
-# print_table()
-print(runtimes[TOTAL][0][0].timestamp())
-print(mcperf[0][1][1].timestamp())
+def create_figures():
+    
+    for i in range(0, 3):
+        start = runtimes[TOTAL][i][0].timestamp()
+        x_vals = []
+        widths = []
+        y_vals = [m[0] for m in mcperf[i]]
 
+        for entry in mcperf[i]:
+            x_vals.append(entry[1].timestamp() - start)
+            widths.append(entry[2].timestamp() - entry[1].timestamp())
 
-current = mcperf[0]
-start = runtimes[TOTAL][0][0].timestamp()
-x_vals = []
-widths = []
-y_vals = [m[0] for m in mcperf[0]]
+        fig, (ax2, ax1) = plt.subplots(2, 1, sharex=True)
+        fig.set_size_inches(10.5, 5.5)
+        fig.suptitle(f'Run {i + 1}', fontsize=22)
+        ax1.bar(x_vals, y_vals, widths, align='edge')
 
-for entry in current:
-    x = x_vals.append(entry[1].timestamp() - start)
-    widths.append(entry[2].timestamp() - entry[1].timestamp())
+        ax1.set_ylabel('p95 latency (ms)')
+        ax1.set_xlabel('Time (s)')
 
-fig, (ax2, ax1) = plt.subplots(2, 1, sharex=True)
+        # Fixing random state for reproducibility
+        # Example data
+        nodes = ["node-b-2", "node-b-4", "node-e-8"]
 
+        blackscholes_start = runtimes[BLACKSCHOLES][i][0].timestamp() - runtimes[TOTAL][i][0].timestamp()
+        ax2.barh(0, width=runtimes[BLACKSCHOLES][i][2], height=0.25, left=blackscholes_start, color="#CCA000", label="blackscholes")
 
-ax1.bar(x_vals, y_vals, widths, align='edge')
+        freqmine_start = runtimes[FREQMINE][i][0].timestamp() - runtimes[TOTAL][i][0].timestamp()
+        ax2.barh(2, width=runtimes[FREQMINE][i][2], height=0.25, left=freqmine_start, color="#0CCA00", label="freqmine")
 
-ax1.set_ylabel('95th percentile latency (ms)')
-ax1.set_xlabel('Time (s)')
+        vips_start = runtimes[VIPS][i][0].timestamp() - runtimes[TOTAL][i][0].timestamp()
+        ax2.barh(2 - 1/16, width=runtimes[VIPS][i][2], height=0.125, left=vips_start, color="#CC0A00", label="vips")
 
-# # Fixing random state for reproducibility
-# Example data
-nodes = ["node-b-2", "node-b-4", "node-e-8"]
-performance = 3 + 10 * np.random.rand(len(nodes))
-error = np.random.rand(len(nodes))
+        radix_start = runtimes[RADIX][i][0].timestamp() - runtimes[TOTAL][i][0].timestamp()
+        ax2.barh(2 + 1/16, width=runtimes[RADIX][i][2], height=0.125, left=radix_start, color="#00CCA0", label="radix")
 
-blackscholes_start = runtimes[BLACKSCHOLES][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-ax2.barh(0, width=runtimes[BLACKSCHOLES][0][2], height=0.25, left=blackscholes_start, color="#CCA000")
+        ferret_start = runtimes[FERRET][i][0].timestamp() - runtimes[TOTAL][i][0].timestamp()
+        ax2.barh(1 + 1/16, width=runtimes[FERRET][i][2], height=0.125, left=ferret_start, color="#AACCCA", label="ferret")
 
-freqmine_start = runtimes[FREQMINE][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-ax2.barh(2, width=runtimes[FREQMINE][0][2], height=0.25, left=freqmine_start, color="#0CCA00")
+        canneal_start = runtimes[CANNEAL][i][0].timestamp() - runtimes[TOTAL][i][0].timestamp()
+        ax2.barh(1 - 1/16, width=runtimes[CANNEAL][i][2], height=0.125, left=canneal_start, color="#CCCCAA", label="canneal")
 
-vips_start = runtimes[VIPS][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-ax2.barh(2 - 1/16, width=runtimes[VIPS][0][2], height=0.125, left=vips_start, color="#CC0A00")
+        dedup_start = runtimes[DEDUP][i][0].timestamp() - runtimes[TOTAL][i][0].timestamp()
+        ax2.barh(1 - 1/16, width=runtimes[DEDUP][i][2], height=0.125, left=dedup_start, color="#CCACCA", label="dedup")
 
-radix_start = runtimes[RADIX][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-ax2.barh(2 + 1/16, width=runtimes[RADIX][0][2], height=0.125, left=radix_start, color="#00CCA0")
+        ax2.set_yticks([0, 1, 2], labels=nodes)
+        ax2.tick_params(axis=u'both', which=u'both',length=0)
+        ax2.spines['top'].set_visible(False)
+        ax2.spines['right'].set_visible(False)
+        ax2.spines['bottom'].set_visible(False)
+        ax2.spines['left'].set_visible(False)
+        ax2.set_aspect(20)
 
-ferret_start = runtimes[FERRET][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-ax2.barh(1 + 1/16, width=runtimes[FERRET][0][2], height=0.125, left=ferret_start, color="#AACCCA")
+        fig.legend(ncol=1, loc="upper right")
+        plt.savefig(f"p3_run{i}.pdf")
 
-canneal_start = runtimes[CANNEAL][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-ax2.barh(1 - 1/16, width=runtimes[CANNEAL][0][2], height=0.125, left=canneal_start, color="#CCCCAA")
-
-dedup_start = runtimes[DEDUP][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-ax2.barh(1 - 1/16, width=runtimes[DEDUP][0][2], height=0.125, left=dedup_start, color="#CCACCA")
-
-ax2.set_yticks([0, 1, 2], labels=nodes)
-ax2.tick_params(axis=u'both', which=u'both',length=0)
-ax2.spines['top'].set_visible(False)
-ax2.spines['right'].set_visible(False)
-ax2.spines['bottom'].set_visible(False)
-ax2.spines['left'].set_visible(False)
-ax2.set_aspect(20)
-
-plt.show()
+create_figures()
