@@ -118,14 +118,13 @@ for entry in current:
     x = x_vals.append(entry[1].timestamp() - start)
     widths.append(entry[2].timestamp() - entry[1].timestamp())
 
-fig, (ax1, ax2) = plt.subplots(2, 1)
+fig, (ax2, ax1) = plt.subplots(2, 1, sharex=True)
 
 
 ax1.bar(x_vals, y_vals, widths, align='edge')
 
 ax1.set_ylabel('95th percentile latency (ms)')
 ax1.set_xlabel('Time (s)')
-ax1.set_title('Behavior of the latency of memcached')
 
 # # Fixing random state for reproducibility
 # Example data
@@ -155,7 +154,6 @@ dedup_start = runtimes[DEDUP][0][0].timestamp() - runtimes[TOTAL][0][0].timestam
 ax2.barh(1 - 1/16, width=runtimes[DEDUP][0][2], height=0.125, left=dedup_start, color="#CCACCA")
 
 ax2.set_yticks([0, 1, 2], labels=nodes)
-ax2.get_xaxis().set_ticks([])
 ax2.tick_params(axis=u'both', which=u'both',length=0)
 ax2.spines['top'].set_visible(False)
 ax2.spines['right'].set_visible(False)
