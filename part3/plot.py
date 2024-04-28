@@ -118,53 +118,49 @@ for entry in current:
     x = x_vals.append(entry[1].timestamp() - start)
     widths.append(entry[2].timestamp() - entry[1].timestamp())
 
-fig, ax = plt.subplots()
+fig, (ax1, ax2) = plt.subplots(2, 1)
 
 
-ax.bar(x_vals, y_vals, widths, align='edge')
+ax1.bar(x_vals, y_vals, widths, align='edge')
 
-ax.set_ylabel('95th percentile latency (ms)')
-ax.set_xlabel('Time (s)')
-ax.set_title('Behavior of the latency of memcached')
-plt.show()
-
+ax1.set_ylabel('95th percentile latency (ms)')
+ax1.set_xlabel('Time (s)')
+ax1.set_title('Behavior of the latency of memcached')
 
 # # Fixing random state for reproducibility
-# fig, ax = plt.subplots()
+# Example data
+nodes = ["node-b-2", "node-b-4", "node-e-8"]
+performance = 3 + 10 * np.random.rand(len(nodes))
+error = np.random.rand(len(nodes))
 
-# # Example data
-# nodes = ["node-b-2", "node-b-4", "node-e-8"]
-# performance = 3 + 10 * np.random.rand(len(nodes))
-# error = np.random.rand(len(nodes))
+blackscholes_start = runtimes[BLACKSCHOLES][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
+ax2.barh(0, width=runtimes[BLACKSCHOLES][0][2], height=0.25, left=blackscholes_start, color="#CCA000")
 
-# blackscholes_start = runtimes[BLACKSCHOLES][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-# ax.barh(0, width=runtimes[BLACKSCHOLES][0][2], height=0.25, left=blackscholes_start, color="#CCA000")
+freqmine_start = runtimes[FREQMINE][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
+ax2.barh(2, width=runtimes[FREQMINE][0][2], height=0.25, left=freqmine_start, color="#0CCA00")
 
-# freqmine_start = runtimes[FREQMINE][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-# ax.barh(2, width=runtimes[FREQMINE][0][2], height=0.25, left=freqmine_start, color="#0CCA00")
+vips_start = runtimes[VIPS][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
+ax2.barh(2 - 1/16, width=runtimes[VIPS][0][2], height=0.125, left=vips_start, color="#CC0A00")
 
-# vips_start = runtimes[VIPS][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-# ax.barh(2 - 1/16, width=runtimes[VIPS][0][2], height=0.125, left=vips_start, color="#CC0A00")
+radix_start = runtimes[RADIX][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
+ax2.barh(2 + 1/16, width=runtimes[RADIX][0][2], height=0.125, left=radix_start, color="#00CCA0")
 
-# radix_start = runtimes[RADIX][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-# ax.barh(2 + 1/16, width=runtimes[RADIX][0][2], height=0.125, left=radix_start, color="#00CCA0")
+ferret_start = runtimes[FERRET][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
+ax2.barh(1 + 1/16, width=runtimes[FERRET][0][2], height=0.125, left=ferret_start, color="#AACCCA")
 
-# ferret_start = runtimes[FERRET][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-# ax.barh(1 + 1/16, width=runtimes[FERRET][0][2], height=0.125, left=ferret_start, color="#AACCCA")
+canneal_start = runtimes[CANNEAL][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
+ax2.barh(1 - 1/16, width=runtimes[CANNEAL][0][2], height=0.125, left=canneal_start, color="#CCCCAA")
 
-# canneal_start = runtimes[CANNEAL][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-# ax.barh(1 - 1/16, width=runtimes[CANNEAL][0][2], height=0.125, left=canneal_start, color="#CCCCAA")
+dedup_start = runtimes[DEDUP][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
+ax2.barh(1 - 1/16, width=runtimes[DEDUP][0][2], height=0.125, left=dedup_start, color="#CCACCA")
 
-# dedup_start = runtimes[DEDUP][0][0].timestamp() - runtimes[TOTAL][0][0].timestamp()
-# ax.barh(1 - 1/16, width=runtimes[DEDUP][0][2], height=0.125, left=dedup_start, color="#CCACCA")
+ax2.set_yticks([0, 1, 2], labels=nodes)
+ax2.get_xaxis().set_ticks([])
+ax2.tick_params(axis=u'both', which=u'both',length=0)
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
+ax2.spines['bottom'].set_visible(False)
+ax2.spines['left'].set_visible(False)
+ax2.set_aspect(20)
 
-# ax.set_yticks([0, 1, 2], labels=nodes)
-# ax.get_xaxis().set_ticks([])
-# ax.tick_params(axis=u'both', which=u'both',length=0)
-# ax.spines['top'].set_visible(False)
-# ax.spines['right'].set_visible(False)
-# ax.spines['bottom'].set_visible(False)
-# ax.spines['left'].set_visible(False)
-# ax.set_aspect(20)
-
-# plt.show()
+plt.show()
