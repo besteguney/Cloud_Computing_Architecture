@@ -10,6 +10,7 @@ matplotlib = "*"
 scipy = "*"
 psutil = "*"
 docker = "*"
+argparse = "*"
 
 [dev-packages]
 

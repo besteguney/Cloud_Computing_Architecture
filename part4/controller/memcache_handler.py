@@ -2,33 +2,40 @@ import psutil
 from time import sleep
 import subprocess
 from scheduler_logger import Job, SchedulerLogger
+from docker_scheduler import DockerScheduler
 
+HIGH_MODE = 0
+LOW_MODE = 1
 class MemcacheHandler:
-    def __init__(self, scheduler_logger: SchedulerLogger):
-        self.process_id = self.get_process_id()
-        print(f'current process is {self.process_id}')
-        self.scheduler_logger = scheduler_logger
-        self.cpu_list = [0,1]
 
-        # Initialize memcache.
-        self.set_cpu_affinity("0-1")
-        print(' jdhfdjshf jfdsjfjds dhfjsd ')
-        self.scheduler_logger.job_start(Job.MEMCACHED, ['0-1'], 2)
-    
+    def __init__(self, logger:SchedulerLogger, high_threshold=80, low_threshold=180):
+        self.process_id = self.get_process_id()
+        print(f'Memcahed PID is {self.process_id}')
+        self.logger = SchedulerLogger()
+        self.docker_scheduler = DockerScheduler(scheduler_logger=logger)
+        self.cpu_list = [0]
+        self.set_cpu_affinity("0")
+        print(f"Memcached CPU affinity set to 0")
+        self.logger.job_start(Job.MEMCACHED, ['0'], 2)
+        self.mode = LOW_MODE
+        self.high_threshold = high_threshold
+        self.low_threshold = low_threshold
+        self.memc_process = psutil.Process(self.process_id)
+
     def get_process_id(self)->int:
         pid = None
         for process in psutil.process_iter(['pid', 'name']):
             if 'memcached' in process.info['name']:
                 pid = process.info['pid']
                 break
-        
+
         return -1 if pid is None else int(pid)
-    
+
     def set_cpu_affinity(self, core_list):
         if self.process_id == -1:
             # Log that the process is not running
             return
-        
+
         command = ['sudo', 'taskset', '-acp', core_list, str(self.process_id)]
         try:
             subprocess.run(command, check=True)
@@ -42,7 +49,7 @@ class MemcacheHandler:
         except subprocess.CalledProcessError as e:
             #Logging the details
             print(f"Error setting CPU affinity: {e}")
-    
+
     # Followed the steps in https://rosettacode.org/wiki/Linux_CPU_utilization
     def get_cpu_utilization(self, all=True, cpu_no=0)->float:
         count = 0
@@ -73,17 +80,44 @@ class MemcacheHandler:
         if len(self.cpu_list) == 2 and current_usage <= 100:
             available_cores = 3
             self.set_cpu_affinity("0")
-            self.scheduler_logger.update_cores(Job.MEMCACHED, ['0'])
+            self.logger.update_cores(Job.MEMCACHED, ['0'])
             self.cpu_list = [0]
         elif len(self.cpu_list) == 1 and current_usage > 90:
             available_cores = 2
             self.set_cpu_affinity("0-1")
-            self.scheduler_logger.update_cores(Job.MEMCACHED, ['0-1'])
+            self.logger.update_cores(Job.MEMCACHED, ['0-1'])
             self.cpu_list = [0, 1]
 
         return available_cores
-    
-#scheduler = MemcacheScheduler()
-#scheduler.set_cpu_affinity("0-2")
-#print(scheduler.get_cpu_utilization(False, 0))
-#print(psutil.cpu_percent(interval=None, percpu=True)[0])
+
+    def swith_to_high(self):
+        self.mode = HIGH_MODE
+        print(f"Switching to HIGH QPS MODE. Cores for Memcache: 0-1")
+        self.logger.update_cores(Job.MEMCACHED, ["0", "1"])
+        self.set_cpu_affinity([0-1])
+        self.docker_scheduler.set_two_core_mode()
+
+    def switch_to_low(self):
+        self.mode = LOW_MODE
+        print(f"Switching to LOW QPS MODE. Cores: 0")
+        self.logger.update_cores(Job.MEMCACHED, ["0"])
+        self.set_cpu_affinity([0])
+        self.docker_scheduler.set_three_core_mode()
+
+    def run_docker_scheduler(self):
+        self.docker_scheduler.run()
+
+    def run(self):
+        while True:
+            cpu_utilizations = psutil.cpu_percent(interval=None, percpu=True)
+            memcache_usage = 0
+            if self.mode == HIGH_MODE:
+                memcache_usage = cpu_utilizations[0] + cpu_utilizations[1]
+            else:
+                memcache_usage = cpu_utilizations[0]
+            if self.mode == LOW_MODE and memcache_usage > self.high_threshold:
+                self.swith_to_high()
+            elif self.mode == HIGH_MODE and memcache_usage < self.low_threshold:
+                self.switch_to_low()
+
+
