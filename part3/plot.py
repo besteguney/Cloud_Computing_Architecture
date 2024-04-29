@@ -109,7 +109,7 @@ def create_figures():
         start = runtimes[TOTAL][i][0].timestamp()
         x_vals = []
         widths = []
-        y_vals = [m[0] for m in mcperf[i]]
+        y_vals = [m[0] / 1000 for m in mcperf[i]]
 
         for entry in mcperf[i]:
             x_vals.append(entry[1].timestamp() - start)
@@ -125,7 +125,7 @@ def create_figures():
 
         # Fixing random state for reproducibility
         # Example data
-        nodes = ["node-b-2", "node-b-4", "node-e-8"]
+        nodes = ["node-a-2", "node-b-4", "node-c-8"]
 
         blackscholes_start = runtimes[BLACKSCHOLES][i][0].timestamp() - runtimes[TOTAL][i][0].timestamp()
         ax2.barh(0, width=runtimes[BLACKSCHOLES][i][2], height=0.25, left=blackscholes_start, color="#CCA000", label="blackscholes")
@@ -158,5 +158,6 @@ def create_figures():
 
         fig.legend(ncol=1, loc="upper right")
         plt.savefig(f"p3_run{i}.pdf")
+        # plt.show()
 
 create_figures()
