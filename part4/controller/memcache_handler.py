@@ -121,5 +121,6 @@ class MemcacheHandler:
             elif self.mode == HIGH_MODE and memcache_usage < self.low_threshold:
                 self.switch_to_low()
                 self.set_cpu_affinity("0")
+            sleep(1)
 
 
