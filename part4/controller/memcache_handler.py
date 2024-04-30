@@ -2,22 +2,23 @@ import psutil
 from time import sleep
 import subprocess
 from scheduler_logger import Job, SchedulerLogger
-from docker_scheduler import DockerScheduler
+from enum import Enum
 
-HIGH_MODE = 0
-LOW_MODE = 1
+class MemcacheMode(Enum):
+    TWO_CORE_MODE = 0
+    ONE_CORE_MODE = 1
+
 class MemcacheHandler:
 
     def __init__(self, logger:SchedulerLogger, high_threshold=80, low_threshold=180):
         self.process_id = self.get_process_id()
         print(f'Memcahed PID is {self.process_id}')
         self.logger = SchedulerLogger()
-        self.docker_scheduler = DockerScheduler(scheduler_logger=logger)
         self.cpu_list = [0]
         self.set_cpu_affinity("0")
         print(f"Memcached CPU affinity set to 0")
         self.logger.job_start(Job.MEMCACHED, ['0'], 2)
-        self.mode = LOW_MODE
+        self.mode = MemcacheMode.ONE_CORE_MODE
         self.high_threshold = high_threshold
         self.low_threshold = low_threshold
         self.memc_process = psutil.Process(self.process_id)
@@ -91,36 +92,29 @@ class MemcacheHandler:
         return available_cores
 
     def swith_to_high(self):
-        self.mode = HIGH_MODE
+        self.mode = MemcacheMode.TWO_CORE_MODE
         print(f"Switching to HIGH QPS MODE. Cores for Memcache: 0-1")
-        self.logger.update_cores(Job.MEMCACHED, ["0", "1"])
-        self.set_cpu_affinity([0-1])
-        self.docker_scheduler.set_two_core_mode()
+        self.logger.update_cores(Job.MEMCACHED, ["0-1"])
+        self.set_cpu_affinity("0-1")
 
     def switch_to_low(self):
-        self.mode = LOW_MODE
+        self.mode = MemcacheMode.ONE_CORE_MODE
         print(f"Switching to LOW QPS MODE. Cores: 0")
         self.logger.update_cores(Job.MEMCACHED, ["0"])
-        self.set_cpu_affinity([0])
-        self.docker_scheduler.set_three_core_mode()
-
-    def run_docker_scheduler(self):
-        self.docker_scheduler.run()
+        self.set_cpu_affinity("0")
 
     def run(self):
-        while True:
-            cpu_utilizations = psutil.cpu_percent(interval=None, percpu=True)
-            memcache_usage = 0
-            if self.mode == HIGH_MODE:
-                memcache_usage = cpu_utilizations[0] + cpu_utilizations[1]
-            else:
-                memcache_usage = cpu_utilizations[0]
-            if self.mode == LOW_MODE and memcache_usage > self.high_threshold:
-                self.swith_to_high()
-                self.set_cpu_affinity("0-1")
-            elif self.mode == HIGH_MODE and memcache_usage < self.low_threshold:
-                self.switch_to_low()
-                self.set_cpu_affinity("0")
-            sleep(1)
+        cpu_utilizations = psutil.cpu_percent(interval=None, percpu=True)
+        memcache_usage = 0
+        if self.mode == MemcacheMode.TWO_CORE_MODE:
+            memcache_usage = cpu_utilizations[0] + cpu_utilizations[1]
+        else:
+            memcache_usage = cpu_utilizations[0]
+        if self.mode == MemcacheMode.ONE_CORE_MODE and memcache_usage > self.high_threshold:
+            self.swith_to_high()
+            return 2
+        elif self.mode == MemcacheMode.TWO_CORE_MODE and memcache_usage < self.low_threshold:
+            self.switch_to_low()
+            return 3
 
 

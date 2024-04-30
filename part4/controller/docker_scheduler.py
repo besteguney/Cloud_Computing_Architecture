@@ -3,7 +3,6 @@ from enum import Enum
 from scheduler_logger import Job, SchedulerLogger
 from time import sleep, time
 from threading import Thread, Lock
-
 # This enum shows that status of the container. Taken from https://docker-py.readthedocs.io/en/stable/containers.html.
 class ContainerStatus(Enum):
     RESTART="restarting"
@@ -12,9 +11,6 @@ class ContainerStatus(Enum):
     EXIT="exited"
 
 # Scheduler class to handle the batch jobs.
-
-TWO_CORE_MODE = 0
-THREE_CORE_MODE = 1
 class DockerScheduler:
     def __init__(self, scheduler_logger: SchedulerLogger):
         self.docker_client = docker.from_env()
@@ -55,11 +51,8 @@ class DockerScheduler:
         self.one_core_jobs = [Job.DEDUP, Job.VIPS, Job.RADIX]
         self.two_core_job_idx = 0
         self.one_core_job_idx = 0
-        self.mode = THREE_CORE_MODE
         self.stats = {}
-        self.two_cores = "2-3"
-        self.three_cores = "1-3"
-        self.mode_lock = Lock()
+        self.num_cores = 2
 
     def create_all_containers(self):
         for job in self.two_core_jobs:
@@ -329,6 +322,53 @@ class DockerScheduler:
 
     def two_core_jobs_done(self):
         return self.two_core_job_idx >= len(self.two_core_jobs)
+
+    def update_indexes(self):
+        if self.is_schedule_done():
+            return
+        if self.one_core_jobs_done() and not self.two_core_jobs_done():
+            two_core_status = self.get_container_status(self.two_core_jobs[self.two_core_job_idx])
+            if two_core_status == ContainerStatus.EXIT.value:
+                self.logger_client.job_end(self.two_core_jobs[self.two_core_job_idx])
+                self.two_core_job_idx += 1
+                self.run_or_unpause_container(self.two_core_jobs[self.two_core_job_idx])
+        if not self.one_core_jobs_done() and self.two_core_jobs_done():
+            one_core_status = self.get_container_status(self.one_core_jobs[self.one_core_job_idx])
+            if one_core_status == ContainerStatus.EXIT.value:
+                self.logger_client.job_end(self.one_core_jobs[self.one_core_job_idx])
+                self.one_core_job_idx += 1
+                self.run_or_unpause_container(self.one_core_jobs[self.one_core_job_idx])
+        if not self.one_core_jobs_done() and not self.two_core_jobs_done():
+            one_core_status = self.get_container_status(self.one_core_jobs[self.one_core_job_idx])
+            two_core_status = self.get_container_status(self.two_core_jobs[self.two_core_job_idx])
+            if one_core_status == ContainerStatus.EXIT.value:
+                self.logger_client.job_end(self.one_core_jobs[self.one_core_job_idx])
+                self.one_core_job_idx += 1
+                self.run_or_unpause_container(self.one_core_jobs[self.one_core_job_idx])
+            if two_core_status == ContainerStatus.EXIT.value:
+                self.logger_client.job_end(self.two_core_jobs[self.two_core_job_idx])
+                self.two_core_job_idx += 1
+                self.run_or_unpause_container(self.two_core_jobs[self.two_core_job_idx])
+
+    def handle_cores(self, num_cores:int):
+        self.update_indexes()
+        if self.is_schedule_done():
+            return
+        if self.num_cores == 2 and num_cores == 2:
+            return
+        if self.num_cores == 3 and num_cores == 3:
+            return
+        if self.num_cores == 2 and num_cores == 3:
+            if self.one_core_jobs_done():
+                self.update_container(self.two_core_jobs[self.two_core_job_idx], cores="1-3")
+            else:
+                self.unpause_container(self.one_core_jobs[self.one_core_job_idx])
+            return
+        if self.num_cores == 3 and num_cores == 2:
+            if self.one_core_jobs_done():
+                self.update_container(self.two_core_jobs[self.two_core_job_idx], cores="2-3")
+            else:
+                self.pause_container(self.one_core_jobs[self.one_core_job_idx])
 
     def run(self):
         self.create_all_containers()
