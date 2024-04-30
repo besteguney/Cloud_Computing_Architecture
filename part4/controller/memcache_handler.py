@@ -70,12 +70,12 @@ class MemcacheHandler:
             current_usage = current_usage / 2
 
         # If we are using 2 core and average CPU usage is <= 50% assign one core
-        if len(self.cpu_list) == 2 and current_usage <= 100:
+        if len(self.cpu_list) == 2 and current_usage <= 75:
             available_cores = 3
             self.set_cpu_affinity("0")
             self.scheduler_logger.update_cores(Job.MEMCACHED, ['0'])
             self.cpu_list = [0]
-        elif len(self.cpu_list) == 1 and current_usage > 90:
+        elif len(self.cpu_list) == 1 and current_usage > 80:
             available_cores = 2
             self.set_cpu_affinity("0-1")
             self.scheduler_logger.update_cores(Job.MEMCACHED, ['0-1'])
