@@ -52,7 +52,7 @@ class DockerScheduler:
             Job.VIPS: {},
         }
         self.two_core_jobs = [Job.BLACKSCHOLES, Job.CANNEAL, Job.FERRET, Job.FREQMINE]
-        self.one_core_jobs = [Job.DEDUP]
+        self.one_core_jobs = [Job.DEDUP, Job.VIPS, Job.RADIX]
         self.two_core_job_idx = 0
         self.one_core_job_idx = 0
         self.mode = THREE_CORE_MODE
