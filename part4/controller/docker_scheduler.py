@@ -52,7 +52,7 @@ class DockerScheduler:
         self.two_core_job_idx = 0
         self.one_core_job_idx = 0
         self.stats = {}
-        self.num_cores = 2
+        self.num_cores = 3
 
     def create_all_containers(self):
         for job in self.two_core_jobs:
