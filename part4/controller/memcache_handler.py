@@ -110,10 +110,10 @@ class MemcacheHandler:
             memcache_usage = cpu_utilizations[0] + cpu_utilizations[1]
         else:
             memcache_usage = cpu_utilizations[0]
-        if self.mode == MemcacheMode.ONE_CORE_MODE and memcache_usage > self.high_threshold:
+        if self.mode == MemcacheMode.ONE_CORE_MODE and memcache_usage >= self.high_threshold:
             self.swith_to_high()
             return 2
-        elif self.mode == MemcacheMode.TWO_CORE_MODE and memcache_usage < self.low_threshold:
+        elif self.mode == MemcacheMode.TWO_CORE_MODE and memcache_usage <= self.low_threshold:
             self.switch_to_low()
             return 3
 

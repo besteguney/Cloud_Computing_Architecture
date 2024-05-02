@@ -16,24 +16,23 @@ def main():
     args = parser.parse_args()
 
     logger = SchedulerLogger()
-    """
     memcache_handler = MemcacheHandler(
         logger=SchedulerLogger(),
         high_threshold=args.high_mode_threshold,
         low_threshold=args.low_mode_threshold
     )
-    """
     scheduler = DockerScheduler(
         scheduler_logger=logger
     )
-    scheduler.create_all_containers()
+    available_cores = 3
     while not scheduler.is_schedule_done():
-        available_cores = random.choice([1,2])
+        available_cores = memcache_handler.run()
         print(f"Cores is {available_cores}")
         scheduler.handle_cores(available_cores)
         sleep(0.25)
 
     scheduler.remove_containers()
+    logger.end()
     #memcache_handler.set_cpu_affinity("0-1")
 
 if __name__ == "__main__":
