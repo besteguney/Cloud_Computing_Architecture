@@ -10,7 +10,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--interval", type=float, default=0.3)
     parser.add_argument("-n", "--amt", type=int, default=2)
-    parser.add_argument("-u", "--high_mode_threshold", type=float, default=90)
+    parser.add_argument("-u", "--high_mode_threshold", type=float, default=70)
     parser.add_argument("-l", "--low_mode_threshold", type=float, default=100)
 
     args = parser.parse_args()
@@ -29,7 +29,7 @@ def main():
         available_cores = memcache_handler.run()
         print(f"Cores is {available_cores}")
         scheduler.handle_cores(available_cores)
-        sleep(0.25)
+        sleep(1)
 
     scheduler.remove_containers()
     logger.end()

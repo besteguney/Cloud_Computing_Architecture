@@ -226,8 +226,10 @@ class DockerScheduler:
             if container.status != "exited":
                 try:
                     container.update(cpuset_cpus=cores)
-                    self.container_data[job]["cpu_set"] = cores
-                    self.logger_client.update_cores(job, cores=cores.split(","))
+                    if cores == "2-3":
+                        self.logger_client.update_cores(job, cores=["2","3"])
+                    elif cores == "1-3":
+                        self.logger_client.update_cores(job, cores=["1","2","3"])
                     print(f"Container {job.value} UPDATED with {cores}")
                     return container
                 except docker.errors.APIError as e:
