@@ -94,7 +94,7 @@ class MemcacheHandler:
     def swith_to_high(self):
         self.mode = MemcacheMode.TWO_CORE_MODE
         print(f"Switching to HIGH QPS MODE. Cores for Memcache: 0-1")
-        self.logger.update_cores(Job.MEMCACHED, ["0-1"])
+        self.logger.update_cores(Job.MEMCACHED, ["0", "1"])
         self.set_cpu_affinity("0-1")
 
     def switch_to_low(self):
