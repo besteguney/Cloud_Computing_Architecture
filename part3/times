@@ -1,0 +1,197 @@
+Attempt 1:
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:58
+Job:  parsec-canneal
+Job time:  0:01:11
+Job:  parsec-dedup
+Job time:  0:00:15
+Job:  parsec-ferret
+Job time:  0:02:28
+Job:  parsec-freqmine
+Job time:  0:03:02
+Job:  parsec-radix
+Job time:  0:00:16
+Job:  parsec-vips
+Job time:  0:00:43
+Total time: 0:03:33
+
+Attempt 2:
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:53
+Job:  parsec-canneal
+Job time:  0:01:10
+Job:  parsec-dedup
+Job time:  0:00:18
+Job:  parsec-ferret
+Job time:  0:02:05
+Job:  parsec-freqmine
+Job time:  0:02:08
+Job:  parsec-radix
+Job time:  0:00:16
+Job:  parsec-vips
+Job time:  0:00:47
+Total time: 0:03:20
+
+Attempt 3:
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:55
+Job:  parsec-canneal
+Job time:  0:01:11
+Job:  parsec-dedup
+Job time:  0:00:12
+Job:  parsec-ferret
+Job time:  0:02:29
+Job:  parsec-freqmine
+Job time:  0:02:59
+Job:  parsec-radix
+Job time:  0:00:16
+Job:  parsec-vips
+Job time:  0:00:29
+Total time: 0:02:59
+
+Attempt 4:
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:15
+Job:  parsec-canneal
+Job time:  0:02:55
+Job:  parsec-dedup
+Job time:  0:00:16
+Job:  parsec-ferret
+Job time:  0:02:47
+Job:  parsec-freqmine
+Job time:  0:02:08
+Job:  parsec-radix
+Job time:  0:00:17
+Job:  parsec-vips
+Job time:  0:00:29
+Total time: 0:03:14
+
+
+
+Attempt 5:
+# 2-CORE NODE = [
+#     [BLACKSCHOLES]
+# ]
+
+# 8-CORE NODE = [
+#     [FREQMINE, VIPS, DEDUP, RADIX]
+# ]
+
+# 4-CORE NODE = [
+#     [CANNEAL]
+#     [FERRET]
+# ]
+
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:15
+Job:  parsec-canneal
+Job time:  0:01:11
+Job:  parsec-dedup
+Job time:  0:00:16
+Job:  parsec-ferret
+Job time:  0:01:14
+Job:  parsec-freqmine
+Job time:  0:01:36
+Job:  parsec-radix
+Job time:  0:00:10
+Job:  parsec-vips
+Job time:  0:00:29
+Total time: 0:02:53
+
+
+Attempt 6:
+# 2-CORE NODE = [
+#     [BLACKSCHOLES]
+# ]
+
+# 8-CORE NODE = [
+#     [FREQMINE, VIPS, DEDUP, RADIX]
+# ]
+
+# 4-CORE NODE = [
+#     [CANNEAL, FERRET]
+# ]
+
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:16
+Job:  parsec-canneal
+Job time:  0:01:10
+Job:  parsec-dedup
+Job time:  0:00:12
+Job:  parsec-ferret
+Job time:  0:01:32
+Job:  parsec-freqmine
+Job time:  0:01:36
+Job:  parsec-radix
+Job time:  0:00:22
+Job:  parsec-vips
+Job time:  0:00:25
+Total time: 0:02:59
+
+Attempt 9:
+# 2-CORE NODE = [
+#     [BLACKSCHOLES]
+# ]
+
+# 8-CORE NODE = [
+#     [FREQMINE, VIPS, DEDUP, RADIX]
+# ]
+
+# 4-CORE NODE = [
+#     [CANNEAL]
+#     [FERRET]
+# ]
+
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:59
+Job:  parsec-canneal
+Job time:  0:01:57
+Job:  parsec-dedup
+Job time:  0:00:18
+Job:  parsec-ferret
+Job time:  0:02:35
+Job:  parsec-freqmine
+Job time:  0:01:43
+Job:  parsec-radix
+Job time:  0:00:21
+Job:  parsec-vips
+Job time:  0:00:26
+Total time: 0:04:27
+
+
+# 2-CORE NODE = [
+#     [BLACKSCHOLES]
+# ]
+
+# 8-CORE NODE = [
+#     [FREQMINE, (VIPS, RADIX)]
+# ]
+
+# 4-CORE NODE = [
+#     [CANNEAL, DEDUP]
+#     [FERRET]
+# ]
+
+Job:  memcached
+Job:  parsec-blackscholes
+Job time:  0:01:17
+Job:  parsec-canneal
+Job time:  0:01:58
+Job:  parsec-dedup
+Job time:  0:00:18
+Job:  parsec-ferret
+Job time:  0:02:43
+Job:  parsec-freqmine
+Job time:  0:01:44
+Job:  parsec-radix
+Job time:  0:00:28
+Job:  parsec-vips
+Job time:  0:00:42
+Total time: 0:02:44

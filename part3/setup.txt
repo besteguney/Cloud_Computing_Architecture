@@ -1,0 +1,84 @@
+CREATE CLUSTER:
+
+PROJECT='gcloud config get-value project' &&
+kops create -f part3.yaml &&
+kops update cluster --name part3.k8s.local --yes --admin &&
+kops validate cluster --wait 10m &&
+kubectl get nodes -o wide
+
+Output should look like this:
+lstampfl@Laurenzs-MacBook-Pro part3 %  kubectl get nodes -o wide
+NAME                         STATUS   ROLES           AGE     VERSION   INTERNAL-IP   EXTERNAL-IP      OS-IMAGE             KERNEL-VERSION   CONTAINER-RUNTIME
+client-agent-a-09c2          Ready    node            98s     v1.28.6   10.0.16.3     35.198.123.159   Ubuntu 22.04.3 LTS   6.5.0-1013-gcp   containerd://1.7.13
+client-agent-b-bj0m          Ready    node            100s    v1.28.6   10.0.16.7     35.234.97.120    Ubuntu 22.04.3 LTS   6.5.0-1013-gcp   containerd://1.7.13
+client-measure-pl9s          Ready    node            96s     v1.28.6   10.0.16.4     34.159.104.110   Ubuntu 22.04.3 LTS   6.5.0-1013-gcp   containerd://1.7.13
+master-europe-west3-a-fnkg   Ready    control-plane   5m26s   v1.28.6   10.0.16.6     34.159.100.163   Ubuntu 22.04.3 LTS   6.5.0-1013-gcp   containerd://1.7.13
+node-a-2core-1t65            Ready    node            101s    v1.28.6   10.0.16.2     35.242.242.19    Ubuntu 22.04.3 LTS   6.5.0-1013-gcp   containerd://1.7.13
+node-b-4core-65sk            Ready    node            93s     v1.28.6   10.0.16.8     34.89.130.132    Ubuntu 22.04.3 LTS   6.5.0-1013-gcp   containerd://1.7.13
+node-c-8core-rcjf            Ready    node            98s     v1.28.6   10.0.16.5     34.141.35.71     Ubuntu 22.04.3 LTS   6.5.0-1013-gcp   containerd://1.7.13
+
+
+UPDATE MCPERF:
+For each mcperf do:
+gcloud compute ssh --ssh-key-file ~/.ssh/cloud-computing ubuntu@client-agent-a-ljn8  --zone europe-west3-a
+gcloud compute ssh --ssh-key-file ~/.ssh/cloud-computing ubuntu@client-agent-b-9t23 --zone europe-west3-a
+gcloud compute ssh --ssh-key-file ~/.ssh/cloud-computing ubuntu@client-measure-gzg5 --zone europe-west3-a
+
+and then:
+sudo sh -c "echo deb-src http://europe-west3.gce.archive.ubuntu.com/ubuntu/ jammy main restricted >> /etc/apt/sources.list" &&
+sudo apt-get update &&
+sudo apt-get install libevent-dev libzmq3-dev git make g++ --yes &&
+sudo apt-get build-dep memcached --yes &&
+git clone https://github.com/eth-easl/memcache-perf-dynamic.git &&
+cd memcache-perf-dynamic &&
+make
+
+In memcache.yaml, set the appropriate label where we want to start the service:
+cca-project-nodetype: "node-a-2core"
+and then run: 
+kubectl create -f memcached.yaml
+
+lstampfl@Laurenzs-MacBook-Pro part3 % kubectl get pods -o wide                 
+NAME        READY   STATUS    RESTARTS   AGE   IP           NODE                NOMINATED NODE   READINESS GATES
+memcached   1/1     Running   0          4s    100.96.1.3   node-a-2core-1t65   <none>           <none>
+
+
+kubectl expose pod memcached --name memcached-11211 \
+--type LoadBalancer --port 11211 \
+--protocol TCP
+
+lstampfl@Laurenzs-MacBook-Pro part3 % kubectl get service memcached-11211
+NAME              TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)           AGE
+memcached-11211   LoadBalancer   100.71.137.231   35.246.183.158   11211:31641/TCP   57s
+
+
+On client-a:  ./mcperf -T 2 -A
+On client-b:  ./mcperf -T 4 -A
+On client-measure:  
+./mcperf -s 100.69.194.112 --loadonly &&
+./mcperf -s 100.69.194.112 -a 10.0.16.7 -a 10.0.16.8 \
+--noload -T 6 -C 4 -D 4 -Q 1000 -c 4 -t 10 \
+--scan 30000:30500:5
+
+
+Now we can start a job:
+kubectl create -f parsec-freqmine.yaml
+
+And we observe the pod output:
+lstampfl@Laurenzs-MacBook-Pro part3 % kubectl get pods -o wide                 
+NAME                    READY   STATUS    RESTARTS   AGE     IP           NODE                NOMINATED NODE   READINESS GATES
+memcached               1/1     Running   0          9m41s   100.96.1.3   node-a-2core-1t65   <none>           <none>
+parsec-freqmine-rwfzs   1/1     Running   0          14s     100.96.1.4   node-a-2core-1t65   <none>           <none>
+
+And we notice that those jobs cannot be collocated based on the ouput of client-measure:
+read      658.3   821.3   173.5   275.8   303.0   431.2   498.9   560.3   661.4   966.0  1103.9  1656.5  4871.4  6790.1 19094.9  30145.3    30120  1714128941581  1714128951699
+read      665.5   819.8   173.5   278.5   305.4   426.1   492.5   568.5   751.8  1024.1  1128.0  1648.5  4859.6  7708.0 19303.2  30066.4    30125  1714128953209  1714128963327
+
+And we can also delete a job:
+lstampfl@Laurenzs-MacBook-Pro part3 % kubectl delete job parsec-freqmine
+job.batch "parsec-freqmine" deleted
+
+
+
+
+kubectl create -f memcache-t1-cpuset.yaml && kubectl create -f parsec-freqmine.yaml 

@@ -1,0 +1,40 @@
+N=1
+RESULTS
+blackscholes: 2m7.008s
+canneal: 5m44.740s
+dedup: 0m20.977s
+ferret: 5m25.166s
+freqmine: 8m23.625s
+radix: 0m58.782s
+vips: 1m44.726s
+
+
+N=2
+RESULTS
+blackscholes: 1m13.910s
+canneal: 3m11.324s
+dedup: 0m12.377s
+ferret: 2m46.313s
+freqmine: 4m14.923s
+radix: 0m30.912s
+vips: 0m53.833s
+
+N=4
+RESULTS
+blackscholes: 0m48.683s
+canneal: 2m42.236s
+dedup: 0m10.911s
+ferret: 1m37.466s
+freqmine: 2m8.615s
+radix: 0m15.404s
+vips: 0m28.130s
+
+N=8
+RESULTS
+blackscholes: 0m38.071s
+canneal: 2m29.547s
+dedup: 0m9.900s
+ferret: 1m22.493s
+freqmine: 1m44.457s
+radix: 0m10.613s
+vips: 0m23.953s
