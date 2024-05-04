@@ -13,7 +13,7 @@ class MemcacheHandler:
     def __init__(self, logger:SchedulerLogger, high_threshold=80, low_threshold=180):
         self.process_id = self.get_process_id()
         print(f'Memcahed PID is {self.process_id}')
-        self.logger = SchedulerLogger()
+        self.logger = logger
         self.cpu_list = [0]
         self.set_cpu_affinity("0")
         print(f"Memcached CPU affinity set to 0")
