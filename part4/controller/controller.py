@@ -28,8 +28,9 @@ def main():
     scheduler = DockerScheduler(
         scheduler_logger=logger
     )
-    logger.job_start(Job.SCHEDULER)
-    logger.job_start(Job.MEMCACHED)
+    
+    #logger.job_start(Job.SCHEDULER)
+    #logger.job_start(Job.MEMCACHED, )
     available_cores = 3
     while not scheduler.is_schedule_done():
         available_cores = memcache_handler.run()

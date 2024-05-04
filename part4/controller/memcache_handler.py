@@ -22,6 +22,7 @@ class MemcacheHandler:
         self.high_threshold = high_threshold
         self.low_threshold = low_threshold
         self.memc_process = psutil.Process(self.process_id)
+        self.change_request = 0
 
     def get_process_id(self)->int:
         pid = None
@@ -117,8 +118,12 @@ class MemcacheHandler:
             return 3
         elif self.mode == MemcacheMode.TWO_CORE_MODE:
             if memcache_usage <= self.low_threshold:
-                self.switch_to_one_core_mode()
-                return 3
+                if self.change_request >= 5:
+                    self.switch_to_one_core_mode()
+                    self.change_request = 0
+                    return 3
+                else:
+                    self.change_request += 1
             return 2
 
 

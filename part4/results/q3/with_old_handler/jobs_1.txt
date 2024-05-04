@@ -1,0 +1,45 @@
+2024-05-04T16:47:49.885179 start scheduler
+2024-05-04T16:47:49.909687 start memcached [0] 2
+2024-05-04T16:48:25.926147 start dedup [1] 1
+2024-05-04T16:49:25.339267 start vips [2-3] 3
+2024-05-04T16:49:29.844652 update_cores memcached [0,1]
+2024-05-04T16:49:29.868915 end dedup
+2024-05-04T16:50:14.990717 end vips
+2024-05-04T16:50:28.266399 start blackscholes [2-3] 3
+2024-05-04T16:51:27.410717 end blackscholes
+2024-05-04T16:51:32.097133 start canneal [2-3] 3
+2024-05-04T16:54:19.067046 end canneal
+2024-05-04T16:54:26.620483 start ferret [2-3] 3
+2024-05-04T16:57:54.193102 end ferret
+2024-05-04T16:58:03.903428 start freqmine [2-3] 3
+2024-05-04T16:58:58.043616 update_cores memcached [0]
+2024-05-04T16:59:00.069994 start radix [1] 1
+2024-05-04T16:59:09.091650 update_cores memcached [0,1]
+2024-05-04T16:59:09.174047 pause radix
+2024-05-04T16:59:27.231701 update_cores memcached [0]
+2024-05-04T16:59:27.296094 unpause radix
+2024-05-04T16:59:40.836275 update_cores memcached [0,1]
+2024-05-04T16:59:40.915751 pause radix
+2024-05-04T16:59:49.939623 update_cores memcached [0]
+2024-05-04T16:59:50.002472 unpause radix
+2024-05-04T16:59:59.024378 update_cores memcached [0,1]
+2024-05-04T16:59:59.099330 pause radix
+2024-05-04T17:00:12.639616 update_cores memcached [0]
+2024-05-04T17:00:12.710323 unpause radix
+2024-05-04T17:00:21.731996 update_cores memcached [0,1]
+2024-05-04T17:00:21.861835 end radix
+2024-05-04T17:00:48.923621 update_cores memcached [0]
+2024-05-04T17:00:48.978995 update_cores freqmine [1,2,3]
+2024-05-04T17:01:02.507803 update_cores memcached [0,1]
+2024-05-04T17:01:02.601993 update_cores freqmine [2,3]
+2024-05-04T17:01:07.111598 update_cores memcached [0]
+2024-05-04T17:01:07.171637 update_cores freqmine [1,2,3]
+2024-05-04T17:01:29.716149 update_cores memcached [0,1]
+2024-05-04T17:01:29.810302 update_cores freqmine [2,3]
+2024-05-04T17:01:38.831586 update_cores memcached [0]
+2024-05-04T17:01:38.882258 update_cores freqmine [1,2,3]
+2024-05-04T17:01:52.404281 update_cores memcached [0,1]
+2024-05-04T17:01:52.470327 update_cores freqmine [2,3]
+2024-05-04T17:01:56.978033 update_cores memcached [0]
+2024-05-04T17:01:57.074112 end freqmine
+2024-05-04T17:01:57.574685 end scheduler

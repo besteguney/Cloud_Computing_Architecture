@@ -47,6 +47,7 @@ class DockerScheduler:
             Job.RADIX: {},
             Job.VIPS: {},
         }
+
         self.two_core_jobs = [Job.VIPS, Job.BLACKSCHOLES, Job.CANNEAL, Job.FERRET, Job.FREQMINE]
         self.one_core_jobs = [Job.DEDUP, Job.RADIX]
         self.two_core_job_idx = 0
