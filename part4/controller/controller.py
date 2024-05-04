@@ -31,9 +31,8 @@ def main():
         scheduler.handle_cores(available_cores)
         sleep(1)
 
-    scheduler.remove_containers()
     logger.end()
-    #memcache_handler.set_cpu_affinity("0-1")
+    memcache_handler.set_cpu_affinity("0-1")
 
 if __name__ == "__main__":
     main()

@@ -91,20 +91,20 @@ class MemcacheHandler:
 
         return available_cores
 
-    def swith_to_high(self):
+    def switch_to_two_core_mode(self):
         self.mode = MemcacheMode.TWO_CORE_MODE
         print(f"Switching to HIGH QPS MODE. Cores for Memcache: 0-1")
         self.logger.update_cores(Job.MEMCACHED, ["0", "1"])
         self.set_cpu_affinity("0-1")
 
-    def switch_to_low(self):
+    def switch_to_one_core_mode(self):
         self.mode = MemcacheMode.ONE_CORE_MODE
         print(f"Switching to LOW QPS MODE. Cores: 0")
         self.logger.update_cores(Job.MEMCACHED, ["0"])
         self.set_cpu_affinity("0")
 
     def run(self):
-        cpu_utilizations = psutil.cpu_percent(interval=None, percpu=True)
+        cpu_utilizations = psutil.cpu_percent(interval=4, percpu=True)
         memcache_usage = 0
         if self.mode == MemcacheMode.TWO_CORE_MODE:
             memcache_usage = cpu_utilizations[0] + cpu_utilizations[1]
@@ -112,12 +112,12 @@ class MemcacheHandler:
             memcache_usage = cpu_utilizations[0]
         if self.mode == MemcacheMode.ONE_CORE_MODE:
             if memcache_usage >= self.high_threshold:
-                self.swith_to_high()
+                self.switch_to_two_core_mode()
                 return 2
             return 3
         elif self.mode == MemcacheMode.TWO_CORE_MODE:
             if memcache_usage <= self.low_threshold:
-                self.switch_to_low()
+                self.switch_to_one_core_mode()
                 return 3
             return 2
 
