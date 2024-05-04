@@ -16,14 +16,17 @@ def main():
     args = parser.parse_args()
 
     logger = SchedulerLogger()
+
     memcache_handler = MemcacheHandler(
-        logger=SchedulerLogger(),
+        logger=logger,
         high_threshold=args.high_mode_threshold,
         low_threshold=args.low_mode_threshold
     )
+
     scheduler = DockerScheduler(
         scheduler_logger=logger
     )
+
     available_cores = 3
     while not scheduler.is_schedule_done():
         available_cores = memcache_handler.run()
