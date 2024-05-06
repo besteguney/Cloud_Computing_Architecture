@@ -31,7 +31,7 @@ def main():
     while not scheduler.is_schedule_done():
         available_cores = memcache_handler.run()
         scheduler.handle_cores(available_cores)
-        sleep(1)
+        sleep(0.5)
 
     logger.end()
 

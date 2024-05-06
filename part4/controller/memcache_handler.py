@@ -16,7 +16,7 @@ class MemcacheHandler:
         self.logger = logger
         self.cpu_list = [0-1]
         self.set_cpu_affinity("0-1")
-        print(f"Memcached CPU affinity set to 0")
+        print(f"Memcached CPU affinity set to 0-1")
         self.logger.job_start(Job.MEMCACHED, ['0', "1"], 2)
         self.mode = MemcacheMode.TWO_CORE_MODE
         self.high_threshold = high_threshold
@@ -118,7 +118,7 @@ class MemcacheHandler:
             return 3
         elif self.mode == MemcacheMode.TWO_CORE_MODE:
             if memcache_usage <= self.low_threshold:
-                if self.change_request >= 20:
+                if self.change_request >= 10:
                     self.switch_to_one_core_mode()
                     self.change_request = 0
                     return 3

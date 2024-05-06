@@ -407,7 +407,7 @@ class DockerScheduler:
                     if job2 == None:
                         if self.get_container_status(job1) == ContainerStatus.PAUSE.value:
                             self.unpause_container(job1)
-                        if self.get_container_cores(job1) != "2-3":
+                        if self.get_container_cores(container1) != "2-3":
                             self.update_container(job1, cores="2-3")
                             self.run_or_unpause_container(job1)
                     else:
@@ -436,7 +436,7 @@ class DockerScheduler:
                     if self.get_container_status(job1) == ContainerStatus.PAUSE.value:
                         self.unpause_container(job1)
                     if job2 == None:
-                        if self.get_container_cores(job1) != "1-3":
+                        if self.get_container_cores(container1) != "1-3":
                             self.update_container(job1, cores="1-3")
                             self.run_or_unpause_container(job1)
             if job2 != None:
