@@ -27,9 +27,12 @@ def main():
         high_threshold=args.high_mode_threshold,
         low_threshold=args.low_mode_threshold
     )
-    scheduler.run()
+    available_cores = 2
     while not scheduler.is_schedule_done():
-        sleep(0.5)
+        available_cores = memcache_handler.run()
+        scheduler.handle_cores(available_cores)
+        sleep(1)
+
     logger.end()
 
 if __name__ == "__main__":
