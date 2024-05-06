@@ -19,27 +19,18 @@ def main():
 
     logger = SchedulerLogger()
 
+    scheduler = DockerScheduler(
+        scheduler_logger=logger
+    )
     memcache_handler = MemcacheHandler(
         logger=logger,
         high_threshold=args.high_mode_threshold,
         low_threshold=args.low_mode_threshold
     )
-
-    scheduler = DockerScheduler(
-        scheduler_logger=logger
-    )
-    
-    #logger.job_start(Job.SCHEDULER)
-    #logger.job_start(Job.MEMCACHED, )
-    available_cores = 3
+    scheduler.run()
     while not scheduler.is_schedule_done():
-        available_cores = memcache_handler.run()
-        print(f"Cores is {available_cores}")
-        scheduler.handle_cores(available_cores)
-        sleep(1)
-
+        sleep(0.5)
     logger.end()
-    memcache_handler.set_cpu_affinity("0-1")
 
 if __name__ == "__main__":
     main()

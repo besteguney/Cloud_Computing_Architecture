@@ -50,10 +50,12 @@ class DockerScheduler:
 
         self.two_core_jobs = [Job.VIPS, Job.BLACKSCHOLES, Job.CANNEAL, Job.FERRET, Job.FREQMINE]
         self.one_core_jobs = [Job.DEDUP, Job.RADIX]
+        self.all_jobs = [Job.VIPS, Job.BLACKSCHOLES, Job.CANNEAL, Job.FERRET, Job.FREQMINE, Job.DEDUP, Job.RADIX]
         self.two_core_job_idx = 0
         self.one_core_job_idx = 0
         self.stats = {}
-        self.num_cores = 3
+        self.num_cores = 2
+        self.job_idx = 0
 
     def create_all_containers(self):
         for job in self.two_core_jobs:
@@ -364,6 +366,24 @@ class DockerScheduler:
                 self.two_core_job_idx += 1
             return self.two_core_jobs[self.two_core_job_idx]
 
+    def check_queue(self):
+        if self.job_idx >= len(self.all_jobs):
+            return None
+        elif self.job_idx == len(self.all_jobs)-1:
+            status = self.get_container_status(self.all_jobs[self.job_idx])
+            if status != None and status == ContainerStatus.EXIT.value:
+                self.logger_client.job_end(self.all_jobs[self.job_idx])
+                self.job_idx += 1
+                return None
+            else:
+                return self.all_jobs[self.job_idx]
+        elif self.job_idx < len(self.all_jobs) - 1:
+            status = self.get_container_status(self.all_jobs[self.job_idx])
+            if status != None and status == ContainerStatus.EXIT.value:
+                self.logger_client.job_end(self.all_jobs[self.job_idx])
+                self.job_idx += 1
+            return self.all_jobs[self.job_idx]
+
     def get_container_cores(self, container:docker.models.containers.Container):
         return container.attrs["HostConfig"]["CpusetCpus"]
 
@@ -418,72 +438,19 @@ class DockerScheduler:
                             self.run_or_unpause_container(job2)
         self.num_cores = num_cores
 
+    def is_seq_schedule_done(self):
+        return self.job_idx >= len(self.all_jobs)
+
     def run(self):
-        self.create_all_containers()
-        self.stats["total"] = {"start": time()}
-
-        def one_core_jobs():
-            while True:
-                with self.mode_lock:
-                    if self.one_core_jobs_done():
-                        print(f"One core jobs are done.")
-                        if not self.two_core_jobs_done():
-                            if self.mode == TWO_CORE_MODE:
-                                return
-                            else:
-                                self.update_container(self.two_core_jobs[self.two_core_job_idx], cores=self.three_cores)
-                        return
-                    else:
-                        if self.two_core_jobs_done():
-                            print(f"Two core jobs are done.")
-                            if self.mode == TWO_CORE_MODE:
-                                self.update_container(self.one_core_jobs[self.one_core_job_idx], cores=self.two_cores)
-                            else:
-                                self.update_container(self.one_core_jobs[self.one_core_job_idx], cores=self.three_cores)
-                    one_core_job = self.one_core_jobs[self.one_core_job_idx]
-                    print(f"Starting Container: {one_core_job.value}")
-                    one_core_container = self.run_or_unpause_container(job=one_core_job)
-                    self.container_data[one_core_job]["start"] = time()
-                one_core_container.wait()
-                self.container_data[one_core_job]["end"] = time()
-                self.logger_client.job_end(one_core_job)
-                duration = self.container_data[one_core_job]["end"] - self.container_data[one_core_job]["start"]
-                print(f"Job {one_core_job.value} ended. Duration {duration}")
-                self.one_core_job_idx += 1
-
-        def two_core_jobs():
-            while True:
-                with self.mode_lock:
-                    if self.two_core_jobs_done():
-                        print(f"Two core jobs are done")
-                        if not self.one_core_jobs_done():
-                            if self.mode == TWO_CORE_MODE:
-                                self.update_container(self.one_core_jobs[self.one_core_job_idx], cores=self.two_cores)
-                            else:
-                                self.update_container(self.one_core_jobs[self.one_core_job_idx], cores=self.three_cores)
-                        return
-                    else:
-                        if self.one_core_jobs_done():
-                            print(f"One core jobs are done.")
-                        if self.mode == TWO_CORE_MODE:
-                            continue
-                        else:
-                            self.update_container(self.two_core_jobs[self.two_core_job_idx], cores=self.three_cores)
-                    two_core_job = self.two_core_jobs[self.two_core_job_idx]
-                    print(f"Starting Container {two_core_job.value}")
-                    two_core_container = self.run_or_unpause_container(job=two_core_job)
-                    self.container_data[two_core_job]["start"] = time()
-                two_core_container.wait()
-                self.container_data[two_core_job]["end"] = time()
-                self.logger_client.job_end(two_core_job)
-                duration = self.container_data[two_core_job]["end"] - self.container_data[two_core_job]["start"]
-                print(f"Job {two_core_job.value} ended. Duration {duration}")
-                self.two_core_job_idx += 1
-        thread = Thread(target=two_core_jobs, daemon=True)
-        thread.start()
-        one_core_jobs()
-        thread.join()
-        self.stats["total"]["end"] = time()
-        self.stats["total"]["duration"] = self.stats["total"]["end"] - self.stats["total"]["start"]
-        self.logger_client.end()
-        print(self.stats)
+        if self.is_schedule_done():
+            return
+        job = self.check_queue()
+        if job == None:
+            return
+        container = self.get_container(job)
+        if container == None:
+            self.create_container(job, cores="2-3", num_threads=2)
+            self.run_or_unpause_container(job)
+        else:
+            if self.get_container_status(job) == ContainerStatus.PAUSE.value:
+                self.unpause_container(job)

@@ -14,11 +14,11 @@ class MemcacheHandler:
         self.process_id = self.get_process_id()
         print(f'Memcahed PID is {self.process_id}')
         self.logger = logger
-        self.cpu_list = [0]
-        self.set_cpu_affinity("0")
+        self.cpu_list = [0-1]
+        self.set_cpu_affinity("0-1")
         print(f"Memcached CPU affinity set to 0")
-        self.logger.job_start(Job.MEMCACHED, ['0'], 2)
-        self.mode = MemcacheMode.ONE_CORE_MODE
+        self.logger.job_start(Job.MEMCACHED, ['0', "1"], 2)
+        self.mode = MemcacheMode.TWO_CORE_MODE
         self.high_threshold = high_threshold
         self.low_threshold = low_threshold
         self.memc_process = psutil.Process(self.process_id)
