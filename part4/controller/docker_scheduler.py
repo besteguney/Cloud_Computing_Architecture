@@ -442,7 +442,7 @@ class DockerScheduler:
         return self.job_idx >= len(self.all_jobs)
 
     def run(self):
-        if self.is_schedule_done():
+        if self.is_seq_schedule_done():
             return
         job = self.check_queue()
         if job == None:

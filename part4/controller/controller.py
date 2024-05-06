@@ -27,8 +27,9 @@ def main():
         high_threshold=args.high_mode_threshold,
         low_threshold=args.low_mode_threshold
     )
-    scheduler.run()
-    while not scheduler.is_schedule_done():
+    while not scheduler.is_seq_schedule_done():
+        memcache_handler.run()
+        scheduler.run()
         sleep(0.5)
     logger.end()
 

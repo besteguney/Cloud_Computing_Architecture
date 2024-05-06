@@ -118,7 +118,7 @@ class MemcacheHandler:
             return 3
         elif self.mode == MemcacheMode.TWO_CORE_MODE:
             if memcache_usage <= self.low_threshold:
-                if self.change_request >= 5:
+                if self.change_request >= 20:
                     self.switch_to_one_core_mode()
                     self.change_request = 0
                     return 3
