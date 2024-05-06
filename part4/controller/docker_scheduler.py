@@ -17,7 +17,6 @@ class DockerScheduler:
         self.logger_client = scheduler_logger
         self.containers = [] # Holds the created containers for the batch jobs.
         self.current_job = 0
-
         self.images = {
             Job.BLACKSCHOLES: "anakli/cca:parsec_blackscholes",
             Job.CANNEAL: "anakli/cca:parsec_canneal",
@@ -376,16 +375,27 @@ class DockerScheduler:
         if job1 == None and job2 == None:
             return
         if num_cores == 2:
-            status1 = None if job1 == None else self.get_container_status(job1)
-            if job1 != None and status1 == ContainerStatus.RUN.value:
-                self.pause_container(job1)
+            if job1 != None:
+                container1 = self.get_container(job1)
+                if container1 == None:
+                    if job2 == None:
+                        self.create_container(job1, cores="2-3", num_threads=2)
+                        self.run_or_unpause_container(job1)
+                else:
+                    if job2 == None:
+                        if self.get_container_cores(job1) != "2-3":
+                            self.update_container(job1, cores="2-3")
+                            self.run_or_unpause_container(job1)
+                    else:
+                        if self.get_container_status(job1) == ContainerStatus.RUN.value:
+                            self.pause_container(job1)
             if job2 != None:
                 container2 = self.get_container(job2)
                 if container2 == None:
                     self.create_container(job2, cores="2-3", num_threads=3)
                     self.run_or_unpause_container(job2)
                 else:
-                    if self.get_container_cores(container2) == "1-3":
+                    if self.get_container_cores(container2) != "2-3":
                         self.update_container(job2, cores="2-3")
                         self.run_or_unpause_container(job2)
         elif num_cores == 3:

@@ -3,7 +3,7 @@ from time import sleep
 import subprocess
 from scheduler_logger import Job, SchedulerLogger
 from enum import Enum
-
+from time import time
 class MemcacheMode(Enum):
     TWO_CORE_MODE = 0
     ONE_CORE_MODE = 1
@@ -14,14 +14,15 @@ class MemcacheHandler:
         self.process_id = self.get_process_id()
         print(f'Memcahed PID is {self.process_id}')
         self.logger = logger
-        self.cpu_list = [0]
+        self.cpu_list = [0-1]
         self.set_cpu_affinity("0")
-        print(f"Memcached CPU affinity set to 0")
-        self.logger.job_start(Job.MEMCACHED, ['0'], 2)
-        self.mode = MemcacheMode.ONE_CORE_MODE
+        print(f"Memcached CPU affinity set to 0-1")
+        self.logger.job_start(Job.MEMCACHED, ['0-1'], 2)
+        self.mode = MemcacheMode.TWO_CORE_MODE
         self.high_threshold = high_threshold
         self.low_threshold = low_threshold
         self.memc_process = psutil.Process(self.process_id)
+        self.last_transition = 0
 
     def get_process_id(self)->int:
         pid = None
@@ -106,19 +107,27 @@ class MemcacheHandler:
     def run(self):
         cpu_utilizations = psutil.cpu_percent(interval=4, percpu=True)
         memcache_usage = 0
+        for + in range(10):
+            q = psutil.cpu_percent(interval=4, percpu=True)
+            usage = q[0] + q[1] if self.mode == MemcacheMode.TWO_CORE_MODE else q[0]
+            if usage > memcache_usage:
+                memcache_usage = usage
+        """
         if self.mode == MemcacheMode.TWO_CORE_MODE:
             memcache_usage = cpu_utilizations[0] + cpu_utilizations[1]
         else:
             memcache_usage = cpu_utilizations[0]
+        """
+        now = time()
         if self.mode == MemcacheMode.ONE_CORE_MODE:
             if memcache_usage >= self.high_threshold:
                 self.switch_to_two_core_mode()
                 return 2
             return 3
         elif self.mode == MemcacheMode.TWO_CORE_MODE:
-            if memcache_usage <= self.low_threshold:
+            if memcache_usage <= self.low_threshold and now - self.last_transition > 4:
+                self.last_transition = now
                 self.switch_to_one_core_mode()
                 return 3
             return 2
-
 
