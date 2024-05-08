@@ -1,0 +1,34 @@
+2024-05-08T19:58:33.508607 start scheduler
+2024-05-08T19:58:33.539255 start memcached [0,1] 2
+2024-05-08T19:58:37.798369 start vips [2-3] 3
+2024-05-08T19:59:31.943335 end vips
+2024-05-08T19:59:32.200477 start blackscholes [2-3] 3
+2024-05-08T20:00:26.339257 end blackscholes
+2024-05-08T20:00:26.617152 start canneal [2-3] 3
+2024-05-08T20:00:31.118285 update_cores memcached [0]
+2024-05-08T20:00:32.218528 start dedup [1] 1
+2024-05-08T20:00:50.278492 update_cores memcached [0,1]
+2024-05-08T20:00:51.151591 pause dedup
+2024-05-08T20:03:15.742568 update_cores memcached [0]
+2024-05-08T20:03:15.828854 unpause dedup
+2024-05-08T20:03:20.338508 update_cores memcached [0,1]
+2024-05-08T20:03:20.373292 end canneal
+2024-05-08T20:03:20.414371 pause dedup
+2024-05-08T20:03:21.125470 start ferret [2-3] 3
+2024-05-08T20:06:12.794308 update_cores memcached [0]
+2024-05-08T20:06:12.853223 unpause dedup
+2024-05-08T20:06:21.878647 end dedup
+2024-05-08T20:06:23.123529 start radix [1] 1
+2024-05-08T20:06:36.662719 update_cores memcached [0,1]
+2024-05-08T20:06:36.740413 pause radix
+2024-05-08T20:06:50.291174 end ferret
+2024-05-08T20:06:50.580145 start freqmine [2-3] 3
+2024-05-08T20:09:01.558321 update_cores memcached [0]
+2024-05-08T20:09:01.627280 unpause radix
+2024-05-08T20:09:10.652588 update_cores memcached [0,1]
+2024-05-08T20:09:10.713485 pause radix
+2024-05-08T20:10:59.130940 end freqmine
+2024-05-08T20:10:59.153137 unpause radix
+2024-05-08T20:10:59.174909 update_cores radix [2,3]
+2024-05-08T20:11:17.221140 end radix
+2024-05-08T20:11:17.721715 end scheduler
