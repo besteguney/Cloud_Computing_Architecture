@@ -6,9 +6,9 @@ from datetime import datetime
 import dateutil
 import numpy as np
 
-dir = "./part4/results/latest/q3/plots/"
+dir = "./part4/results/latest/q4/plots/"
 percentiles = [5, 10, 50, 67, 75, 80, 85, 90, 95, 99, 999, 9999]
-output_dir = "./part4/results/latest/q3/plots/"
+output_dir = "./part4/results/latest/q4/plots/"
 
 def plotA(run: int):
     file_path = f"{dir}/mcperf/txt/mcperf_{run}.txt"
@@ -69,7 +69,7 @@ def plotA(run: int):
     df_log.to_csv(f"{output_dir}/jobs/csv/jobs_{run}.csv", index=False)
     fig = plt.figure(figsize=(16,12))
     lat_ax, job_ax = fig.subplots(2, 1, gridspec_kw={'height_ratios': [3, 1]})
-    lat_ax.set_title(f"4.3 {run}A",
+    lat_ax.set_title(f"4.4 {run}A",
                      fontsize=14, fontweight="bold", pad=10)
     lat_ax.set_xlim(left=0, right=950)
     lat_ax.set_xlabel("Time (s)")
@@ -78,7 +78,7 @@ def plotA(run: int):
     qps_plot = lat_ax.bar(
         df["timestamp"],
         df["QPS"]/1000,
-        width=10,
+        width=5,
         label="QPS",
         color="papayawhip",
         zorder=2,
@@ -137,7 +137,7 @@ def plotA(run: int):
             for i in range(0, len(entries), 2):
                 job_ax.plot([entries.iloc[i]["timestamp"], entries.iloc[i+1]["timestamp"]], [idx, idx], color=colors[name], linewidth=5, label=name)
     fig.tight_layout()
-    plt.savefig(f"./part4/results/latest/q3/plots/plot4_{run}_A.pdf")
+    plt.savefig(f"./part4/results/latest/q4/plots/plot4_{run}_A.pdf")
 
 def plotB(run: int):
     if not os.path.exists(f"{dir}/mcperf/csv") or not os.path.exists(f"{dir}/jobs/txt"):
@@ -170,7 +170,7 @@ def plotB(run: int):
     print(df_cores)
     fig = plt.figure(figsize=(16,12))
     lat_ax, job_ax = fig.subplots(2, 1, gridspec_kw={'height_ratios': [3, 1]})
-    lat_ax.set_title(f"4.3 {run}B",
+    lat_ax.set_title(f"4.4 {run}B",
                      fontsize=14, fontweight="bold", pad=10)
     lat_ax.set_xlim(left=0, right=950)
     lat_ax.set_xlabel("Time (s)")
@@ -234,7 +234,7 @@ def plotB(run: int):
             for i in range(0, len(entries), 2):
                 job_ax.plot([entries.iloc[i]["timestamp"], entries.iloc[i+1]["timestamp"]], [idx, idx], color=colors[name], linewidth=5, label=name)
     fig.tight_layout()
-    plt.savefig(f"./part4/results/latest/q3/plots/plot4_{run}_B.pdf")
+    plt.savefig(f"./part4/results/latest/q4/plots/plot4_{run}_B.pdf")
 plotB(1)
 plotB(2)
 plotB(3)

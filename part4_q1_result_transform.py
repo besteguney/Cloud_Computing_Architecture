@@ -1,6 +1,7 @@
 import sys
 import pandas as pd
 import os
+from datetime import datetime
 
 folders = [f for f in os.listdir("./part4/q1/")]
 percentiles = [5, 10, 50, 67, 75, 80, 85, 90, 95, 99, 999, 9999]
@@ -37,4 +38,3 @@ for folder in folders:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         df.to_csv(f'{output_dir}/t_{thread_count}_c_{core_count}_{exp_count}.csv', index=False)
-

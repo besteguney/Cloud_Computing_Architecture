@@ -11,6 +11,7 @@ scipy = "*"
 psutil = "*"
 docker = "*"
 argparse = "*"
+python-dateutil = "*"
 
 [dev-packages]
 
