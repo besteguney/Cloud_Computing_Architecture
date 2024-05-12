@@ -1,7 +1,6 @@
 import sys
 import pandas as pd
 import os
-from datetime import datetime
 
 folders = [f for f in os.listdir("./part4/q1/")]
 percentiles = [5, 10, 50, 67, 75, 80, 85, 90, 95, 99, 999, 9999]
