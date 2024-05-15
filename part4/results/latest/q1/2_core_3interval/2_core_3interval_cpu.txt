@@ -1,0 +1,191 @@
+Average CPU usage over 5 seconds: 2.10%
+Average CPU usage over 5 seconds: 2.20%
+Average CPU usage over 5 seconds: 2.20%
+Average CPU usage over 5 seconds: 2.10%
+Average CPU usage over 5 seconds: 3.20%
+Average CPU usage over 5 seconds: 0.00%
+
+Average CPU usage over 5 seconds: 3.00%
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 2.20%
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 2.20%
+Average CPU usage over 5 seconds: 2.20%
+Average CPU usage over 5 seconds: 2.00%
+
+Average CPU usage over 5 seconds: 3.20%
+Average CPU usage over 5 seconds: 1.10%
+Average CPU usage over 5 seconds: 2.30%
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 1.10%
+
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 3.30%
+Average CPU usage over 5 seconds: 1.20%
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 3.60%
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 1.10%
+Average CPU usage over 5 seconds: 1.00%
+Average CPU usage over 5 seconds: 3.60%
+Average CPU usage over 5 seconds: 5.00%
+
+Average CPU usage over 5 seconds: 3.70%
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 7.40%
+Average CPU usage over 5 seconds: 4.10%
+Average CPU usage over 5 seconds: 1.00%
+Average CPU usage over 5 seconds: 11.20%
+Average CPU usage over 5 seconds: 5.10%
+Average CPU usage over 5 seconds: 12.60%
+
+Average CPU usage over 5 seconds: 6.50%
+Average CPU usage over 5 seconds: 12.60%
+Average CPU usage over 5 seconds: 3.00%
+Average CPU usage over 5 seconds: 3.00%
+Average CPU usage over 5 seconds: 27.90%
+Average CPU usage over 5 seconds: 21.50%
+Average CPU usage over 5 seconds: 21.30%
+Average CPU usage over 5 seconds: 27.70%
+Average CPU usage over 5 seconds: 21.30%
+
+Average CPU usage over 5 seconds: 1.00%
+Average CPU usage over 5 seconds: 20.20%
+Average CPU usage over 5 seconds: 54.20%
+Average CPU usage over 5 seconds: 48.40%
+Average CPU usage over 5 seconds: 51.40%
+Average CPU usage over 5 seconds: 51.70%
+Average CPU usage over 5 seconds: 37.20%
+Average CPU usage over 5 seconds: 1.00%
+
+Average CPU usage over 5 seconds: 45.90%
+Average CPU usage over 5 seconds: 88.60%
+Average CPU usage over 5 seconds: 82.60%
+Average CPU usage over 5 seconds: 86.60%
+Average CPU usage over 5 seconds: 89.80%
+Average CPU usage over 5 seconds: 46.10%
+
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 75.10%
+Average CPU usage over 5 seconds: 96.00%
+Average CPU usage over 5 seconds: 101.30%
+Average CPU usage over 5 seconds: 102.80%
+Average CPU usage over 5 seconds: 102.00%
+Average CPU usage over 5 seconds: 40.80%
+Average CPU usage over 5 seconds: 0.00%
+
+Average CPU usage over 5 seconds: 103.10%
+Average CPU usage over 5 seconds: 111.50%
+Average CPU usage over 5 seconds: 115.50%
+Average CPU usage over 5 seconds: 116.60%
+Average CPU usage over 5 seconds: 115.30%
+Average CPU usage over 5 seconds: 21.90%
+Average CPU usage over 5 seconds: 10.80%
+
+Average CPU usage over 5 seconds: 125.10%
+Average CPU usage over 5 seconds: 125.00%
+Average CPU usage over 5 seconds: 123.60%
+Average CPU usage over 5 seconds: 124.30%
+Average CPU usage over 5 seconds: 119.10%
+Average CPU usage over 5 seconds: 2.00%
+Average CPU usage over 5 seconds: 41.70%
+
+Average CPU usage over 5 seconds: 130.60%
+Average CPU usage over 5 seconds: 129.00%
+Average CPU usage over 5 seconds: 129.10%
+Average CPU usage over 5 seconds: 128.60%
+Average CPU usage over 5 seconds: 102.80%
+Average CPU usage over 5 seconds: 4.00%
+Average CPU usage over 5 seconds: 70.70%
+
+Average CPU usage over 5 seconds: 130.30%
+Average CPU usage over 5 seconds: 131.60%
+Average CPU usage over 5 seconds: 130.80%
+Average CPU usage over 5 seconds: 133.10%
+Average CPU usage over 5 seconds: 79.10%
+Average CPU usage over 5 seconds: 2.00%
+
+Average CPU usage over 5 seconds: 93.40%
+Average CPU usage over 5 seconds: 134.20%
+Average CPU usage over 5 seconds: 133.90%
+Average CPU usage over 5 seconds: 134.30%
+Average CPU usage over 5 seconds: 131.10%
+Average CPU usage over 5 seconds: 57.20%
+Average CPU usage over 5 seconds: 0.00%
+
+Average CPU usage over 5 seconds: 120.20%
+Average CPU usage over 5 seconds: 139.50%
+Average CPU usage over 5 seconds: 138.00%
+Average CPU usage over 5 seconds: 141.50%
+Average CPU usage over 5 seconds: 141.00%
+Average CPU usage over 5 seconds: 25.40%
+Average CPU usage over 5 seconds: 8.90%
+
+Average CPU usage over 5 seconds: 146.50%
+Average CPU usage over 5 seconds: 144.00%
+Average CPU usage over 5 seconds: 145.80%
+Average CPU usage over 5 seconds: 147.50%
+Average CPU usage over 5 seconds: 142.30%
+Average CPU usage over 5 seconds: 1.00%
+Average CPU usage over 5 seconds: 34.20%
+
+Average CPU usage over 5 seconds: 151.50%
+Average CPU usage over 5 seconds: 151.20%
+Average CPU usage over 5 seconds: 152.30%
+Average CPU usage over 5 seconds: 158.50%
+Average CPU usage over 5 seconds: 125.40%
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 67.00%
+
+Average CPU usage over 5 seconds: 158.30%
+Average CPU usage over 5 seconds: 156.00%
+Average CPU usage over 5 seconds: 156.60%
+Average CPU usage over 5 seconds: 159.60%
+Average CPU usage over 5 seconds: 102.70%
+Average CPU usage over 5 seconds: 1.00%
+
+Average CPU usage over 5 seconds: 102.70%
+Average CPU usage over 5 seconds: 160.20%
+Average CPU usage over 5 seconds: 163.10%
+Average CPU usage over 5 seconds: 163.80%
+Average CPU usage over 5 seconds: 165.90%
+Average CPU usage over 5 seconds: 73.50%
+Average CPU usage over 5 seconds: 0.00%
+
+Average CPU usage over 5 seconds: 140.10%
+Average CPU usage over 5 seconds: 176.10%
+Average CPU usage over 5 seconds: 170.00%
+Average CPU usage over 5 seconds: 170.50%
+Average CPU usage over 5 seconds: 170.30%
+Average CPU usage over 5 seconds: 41.00%
+Average CPU usage over 5 seconds: 1.00%
+
+Average CPU usage over 5 seconds: 177.00%
+Average CPU usage over 5 seconds: 177.70%
+Average CPU usage over 5 seconds: 179.50%
+Average CPU usage over 5 seconds: 183.00%
+Average CPU usage over 5 seconds: 182.50%
+Average CPU usage over 5 seconds: 8.00%
+Average CPU usage over 5 seconds: 34.20%
+
+Average CPU usage over 5 seconds: 186.00%
+Average CPU usage over 5 seconds: 179.40%
+Average CPU usage over 5 seconds: 181.80%
+Average CPU usage over 5 seconds: 178.60%
+Average CPU usage over 5 seconds: 150.00%
+Average CPU usage over 5 seconds: 0.00%
+Average CPU usage over 5 seconds: 73.50%
+
+Average CPU usage over 5 seconds: 189.80%
+Average CPU usage over 5 seconds: 185.30%
+Average CPU usage over 5 seconds: 187.10%
+Average CPU usage over 5 seconds: 186.20%
+Average CPU usage over 5 seconds: 117.90%
+Average CPU usage over 5 seconds: 0.00%
+
+Average CPU usage over 5 seconds: 111.50%
+Average CPU usage over 5 seconds: 198.00%
+Average CPU usage over 5 seconds: 197.10%
+Average CPU usage over 5 seconds: 198.10%
+Average CPU usage over 5 seconds: 197.10%

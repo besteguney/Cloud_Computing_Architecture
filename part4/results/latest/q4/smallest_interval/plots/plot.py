@@ -228,6 +228,7 @@ def plotB(run: int):
                 job_ax.plot([entries.iloc[i]["timestamp"], entries.iloc[i+1]["timestamp"]], [idx, idx], color=colors[name], linewidth=5, label=name)
     fig.tight_layout()
     plt.savefig(f"./part4/results/latest/q4/smallest_interval/plots/smallest_interval_plot_{run}_B.pdf")
+
 plotA(1)
 plotB(1)
 plotA(2)
