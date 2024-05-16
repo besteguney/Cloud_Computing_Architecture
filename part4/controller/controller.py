@@ -12,8 +12,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--interval", type=float, default=0.3)
     parser.add_argument("-n", "--amt", type=int, default=2)
-    parser.add_argument("-u", "--high_mode_threshold", type=float, default=70)
-    parser.add_argument("-l", "--low_mode_threshold", type=float, default=100)
+    parser.add_argument("-u", "--high_mode_threshold", type=float, default=50)
+    parser.add_argument("-l", "--low_mode_threshold", type=float, default=60)
 
     args = parser.parse_args()
 
