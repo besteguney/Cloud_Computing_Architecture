@@ -6,12 +6,12 @@ from datetime import datetime
 import dateutil
 import numpy as np
 
-dir = "./part4/results/latest/q3/plots/"
+dir = "./part4/results/latest/q4/smallest_interval/"
 percentiles = [5, 10, 50, 67, 75, 80, 85, 90, 95, 99, 999, 9999]
-output_dir = "./part4/results/latest/q3/plots/"
+output_dir = "./part4/results/latest/q4/smallest_interval/"
 
 def plotA(run: int):
-    file_path = f"{dir}/mcperf/txt/mcperf_{run}.txt"
+    file_path = f"{dir}/mcperf/txt/smallest_interval_12_{run}.txt"
     data = []
     with open(file_path, "r") as file:
         lines = file.readlines()
@@ -20,10 +20,8 @@ def plotA(run: int):
         for line in lines:
             if line.startswith("Timestamp start:"):
                 start_time = int(line.split(": ")[1].strip()) / 1000
-                print(start_time)
             if line.startswith("Timestamp end:"):
                 end_time = int(line.split(": ")[1].strip()) / 1000
-                print(end_time)
         lines = lines[7:]
         lines = lines[:-11]
         for idx, line in enumerate(lines):
@@ -42,14 +40,12 @@ def plotA(run: int):
             query["timestamp"] = idx*10
             data.append(query)
     df = pd.DataFrame(data)
-    print(df["timestamp"])
     if not os.path.exists(f"{output_dir}/mcperf/csv"):
         os.makedirs(f"{output_dir}/mcperf/csv")
-    df.to_csv(f"{output_dir}/mcperf/csv/mcperf_{run}.csv", index=False)
+    df.to_csv(f"{output_dir}/mcperf/csv/smallest_interval_mcperf_{run}.csv", index=False)
     violation_ration = len(
             df['p95'][df['p95'] > 1000]) / len(df['p95']) * 100
-    print(violation_ration)
-    file_path = f"{dir}/jobs/txt/jobs_{run}.txt"
+    file_path = f"{dir}/jobs/txt/smallest_interval_12_{run}_job.txt"
     data = []
     with open(file_path, "r") as file:
         lines = file.readlines()
@@ -66,12 +62,12 @@ def plotA(run: int):
     df_log["timestamp"] -= df_log["timestamp"][0]
     if not os.path.exists(f"{output_dir}/jobs/csv"):
         os.makedirs(f"{output_dir}/jobs/csv")
-    df_log.to_csv(f"{output_dir}/jobs/csv/jobs_{run}.csv", index=False)
+    df_log.to_csv(f"{output_dir}/jobs/csv/smallest_interval_jobs_{run}.csv", index=False)
     fig = plt.figure(figsize=(16,10))
     lat_ax, job_ax = fig.subplots(2, 1, gridspec_kw={'height_ratios': [3, 1]})
-    lat_ax.set_xlim(left=0, right=900)
-    lat_ax.set_xticks(range(0, 900, 100), labels=(f"{i}" for i in range(0, 900, 100)))
-    lat_ax.set_xticks(range(0, 900, 50))
+    lat_ax.set_xlim(left=0, right=800)
+    lat_ax.set_xticks(range(0, 800, 100), labels=(f"{i}" for i in range(0, 800, 100)))
+    lat_ax.set_xticks(range(0, 800, 50))
     lat_ax.set_xlabel("Time (s)", fontsize=18, fontweight="semibold", labelpad=10)
     lat_ax.grid(True)
     lat_ax.set_ylabel("QPS", fontsize=18, fontweight="semibold")
@@ -138,14 +134,15 @@ def plotA(run: int):
     job_ax.set_yticks(range(0,7))
     job_ax.set_yticklabels(jobs)
     job_ax.set_ylim([-1, 7])
-    job_ax.set_xlim(left=0, right=900)
-    job_ax.set_xticks(range(0, 900, 100), labels=(f"{i}" for i in range(0, 900, 100)))
-    job_ax.set_xticks(range(0, 900, 50))
+    job_ax.set_xlim(left=0, right=800)
+    job_ax.set_xticks(range(0, 800, 100), labels=(f"{i}" for i in range(0, 800, 100)))
+    job_ax.set_xticks(range(0, 800, 50))
     job_ax.tick_params(top=True, labeltop=True, bottom=False, labelbottom=False)
     job_ax.grid(True)
     for idx, name in enumerate(jobs):
         entries = df_jobs[df_jobs["job"] == name]
         entries = entries[entries["event"].isin(["start", "pause", "unpause", "end"])]
+        print(entries["timestamp"])
         line = None
         if len(entries) == 2:
             plots[name], = job_ax.plot([entries.iloc[0]["timestamp"], entries.iloc[-1]["timestamp"]], [idx, idx], color=colors[name], linewidth=5, label=name)
@@ -154,13 +151,13 @@ def plotA(run: int):
                 plots[name], = job_ax.plot([entries.iloc[i]["timestamp"], entries.iloc[i+1]["timestamp"]], [idx, idx], color=colors[name], linewidth=5, label=name)
     job_ax.legend(plots.values(), plots.keys())
     fig.tight_layout()
-    plt.savefig(f"./part4/results/latest/q3/plots/plot4_{run}_A.pdf")
+    plt.savefig(f"./part4/results/latest/q4/smallest_interval/plots/smallest_interval_{run}_A.pdf")
 
 def plotB(run: int):
     if not os.path.exists(f"{dir}/mcperf/csv") or not os.path.exists(f"{dir}/jobs/txt"):
         raise ValueError("CSV file must exist")
-    file_path = f"{dir}/mcperf/csv/mcperf_{run}.csv"
-    file_path_log = f"{dir}/jobs/txt/jobs_{run}.txt"
+    file_path = f"{dir}/mcperf/csv/smallest_interval_mcperf_{run}.csv"
+    file_path_log = f"{dir}/jobs/txt/smallest_interval_12_{run}_job.txt"
     df = pd.read_csv(file_path)
     data = []
     with open(file_path_log, "r") as file:
@@ -184,12 +181,11 @@ def plotB(run: int):
     })
     df_cores = pd.DataFrame(data)
     df_cores["timestamp"] -= df_cores.iloc[0]["timestamp"]
-    print(df_cores)
     fig = plt.figure(figsize=(16,10))
     lat_ax, job_ax = fig.subplots(2, 1, gridspec_kw={'height_ratios': [3, 1]})
-    lat_ax.set_xlim(left=0, right=900)
-    lat_ax.set_xticks(range(0, 900, 100), labels=(f"{i}" for i in range(0, 900, 100)))
-    lat_ax.set_xticks(range(0, 900, 50))
+    lat_ax.set_xlim(left=0, right=800)
+    lat_ax.set_xticks(range(0, 800, 100), labels=(f"{i}" for i in range(0, 800, 100)))
+    lat_ax.set_xticks(range(0, 800, 50))
     lat_ax.set_xlabel("Time (s)", fontsize=18, fontweight="semibold", labelpad=10)
     lat_ax.grid(True)
     lat_ax.set_ylabel("QPS", fontsize=18, fontweight="semibold")
@@ -236,14 +232,14 @@ def plotB(run: int):
         "ferret": "#aaccca",
         "freqmine": "#0cca00"
     }
-    df_log=pd.read_csv(f"{dir}/jobs/csv/jobs_{run}.csv")
+    df_log=pd.read_csv(f"{dir}/jobs/csv/smallest_interval_jobs_{run}.csv")
     df_jobs = df_log[df_log["job"].isin(jobs)]
     job_ax.set_yticks(range(0,7))
     job_ax.set_yticklabels(jobs)
     job_ax.set_ylim([-1, 7])
-    job_ax.set_xlim(left=0, right=900)
-    job_ax.set_xticks(range(0, 900, 100), labels=(f"{i}" for i in range(0, 900, 100)))
-    job_ax.set_xticks(range(0, 900, 50))
+    job_ax.set_xlim(left=0, right=800)
+    job_ax.set_xticks(range(0, 800, 100), labels=(f"{i}" for i in range(0, 800, 100)))
+    job_ax.set_xticks(range(0, 800, 50))
     job_ax.tick_params(top=True, labeltop=True, bottom=False, labelbottom=False)
     job_ax.grid(True)
     plots = {
@@ -266,7 +262,7 @@ def plotB(run: int):
                 plots[name], = job_ax.plot([entries.iloc[i]["timestamp"], entries.iloc[i+1]["timestamp"]], [idx, idx], color=colors[name], linewidth=5, label=name)
     job_ax.legend(plots.values(), plots.keys())
     fig.tight_layout()
-    plt.savefig(f"./part4/results/latest/q3/plots/plot4_{run}_B.pdf")
+    plt.savefig(f"./part4/results/latest/q4/smallest_interval/plots/smallest_interval_{run}_B.pdf")
 plotA(1)
 plotA(2)
 plotA(3)

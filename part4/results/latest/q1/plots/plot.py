@@ -25,7 +25,7 @@ def transform_cpu_measures(cores: int, run: int):
             cpu_cores = entries[1].split(", ")
             cpu_cores = np.array(cpu_cores, dtype=float)
             query = {
-                "timestamp": entries[0],
+                "timestamp": float(entries[0][:14]),
                 "core_1": float(cpu_cores[0]),
                 "core_2": float(cpu_cores[1]),
                 "core_3": float(cpu_cores[2]),
@@ -90,9 +90,13 @@ def plot(cores: int, run: int):
     df_mcperf = df_mcperf.sort_values("QPS")
     data = []
     for idx in range(len(df_mcperf)):
-        print(df_mcperf.iloc[idx]["avg"])
-        df_trimmed = df_cpu[df_cpu["timestamp"] <= df_mcperf.iloc[idx]["ts_end"]]
-        df_trimmed = df_trimmed[df_trimmed["timestamp"] >= df_mcperf.iloc[idx]["ts_start"]]
+        df_trimmed = df_cpu[df_cpu["timestamp"] < df_mcperf.iloc[idx]["ts_end"]]
+        df_trimmed = df_trimmed[df_trimmed["timestamp"] > df_mcperf.iloc[idx]["ts_start"]]
+        if cores == 1:
+            df_trimmed = df_trimmed[df_trimmed["core_1"] > 0.0]
+        elif cores == 2:
+            df_trimmed = df_trimmed[df_trimmed["core_1"] > 0.0]
+            df_trimmed = df_trimmed[df_trimmed["core_2"] > 0.0]
         query = {
             "QPS": df_mcperf.iloc[idx]["QPS"]
         }
@@ -102,8 +106,10 @@ def plot(cores: int, run: int):
                 cpu_usages.append(df_trimmed.iloc[idx2]["core_1"])
             elif cores == 2:
                 cpu_usages.append(df_trimmed.iloc[idx2]["core_1"] + df_trimmed.iloc[idx2]["core_2"])
-        avg_cpu_usage = sum(cpu_usages) / len(cpu_usages)
+        avg_cpu_usage = max(cpu_usages)
         query["avg_cpu_usage"] = avg_cpu_usage
+        print(query)
+        print("")
         data.append(query)
     df_avg_cpu = pd.DataFrame(data)
     fig = plt.figure(figsize=(16,8))
@@ -148,7 +154,111 @@ def plot(cores: int, run: int):
         plt.savefig(f"./part4/results/latest/q1/plots/{cores}_core_plot.pdf")
     elif run == 2:
         plt.savefig(f"./part4/results/latest/q1/plots/{cores}_core_plot_2.pdf")
-plot(1,1)
-plot(2,1)
-plot(1,2)
-plot(2,2)
+
+def plot_two_run_averages(cores: int):
+    transform_cpu_measures(cores, 1)
+    transform_mcperf_measures(cores, 1)
+    transform_cpu_measures(cores, 2)
+    transform_mcperf_measures(cores, 2)
+    df_cpu_1 = None
+    df_cpu_2 = None
+    df_mcperf_1 = None
+    df_mcperf_2 = None
+    df_cpu_1 = pd.read_csv(f"{dir}/{cores}_core/csv/cpu/t2c{cores}_cpu.csv")
+    df_mcperf_1 = pd.read_csv(f"{dir}/{cores}_core/csv/mcperf/t2c{cores}_mcperf.csv")
+    df_cpu_2 = pd.read_csv(f"{dir}/{cores}_core/csv/cpu/t2c{cores}_cpu_2.csv")
+    df_mcperf_2 = pd.read_csv(f"{dir}/{cores}_core/csv/mcperf/t2c{cores}_mcperf_2.csv")
+    if len(df_mcperf_1) != len(df_mcperf_2):
+        print("Length of mcperf runs must be the same")
+        return
+    data = []
+    for idx in range(len(df_mcperf_1)):
+        query = {
+            "QPS": np.mean([df_mcperf_1.iloc[idx]["QPS"], df_mcperf_2.iloc[idx]["QPS"]]),
+            "ts_start": np.mean([df_mcperf_1.iloc[idx]["ts_start"], df_mcperf_2.iloc[idx]["ts_start"]]),
+            "ts_end": np.mean([df_mcperf_1.iloc[idx]["ts_end"], df_mcperf_2.iloc[idx]["ts_end"]]),
+            "p95": np.mean([df_mcperf_1.iloc[idx]["p95"], df_mcperf_2.iloc[idx]["p95"]])
+        }
+        data.append(query)
+    df_mcperf_avg = pd.DataFrame(data)
+    df_mcperf_avg = df_mcperf_avg.sort_values("QPS")
+    data_cpu = []
+    if len(df_cpu_1) != len(df_cpu_2):
+        print("Lengths of DF CPU do not match")
+        return
+    for idx in range(len(df_cpu_1)):
+        query = {
+            "timestamp": np.mean([df_cpu_1.iloc[idx]["timestamp"], df_cpu_2.iloc[idx]["timestamp"]]),
+            "core_1": np.mean([df_cpu_1.iloc[idx]["core_1"], df_cpu_2.iloc[idx]["core_1"]]),
+            "core_2": np.mean([df_cpu_1.iloc[idx]["core_2"], df_cpu_2.iloc[idx]["core_2"]]),
+            "core_3": np.mean([df_cpu_1.iloc[idx]["core_3"], df_cpu_2.iloc[idx]["core_3"]]),
+            "core_4": np.mean([df_cpu_1.iloc[idx]["core_4"], df_cpu_2.iloc[idx]["core_4"]]),
+        }
+        data_cpu.append(query)
+    df_cpu_avg = pd.DataFrame(data_cpu)
+    for idx in range(len(df_mcperf_avg)):
+        df_trimmed = df_cpu_avg[df_cpu_avg["timestamp"] < df_mcperf_avg.iloc[idx]["ts_end"]]
+        df_trimmed = df_trimmed[df_trimmed["timestamp"] > df_mcperf_avg.iloc[idx]["ts_start"]]
+        print(len(df_trimmed))
+        cpu_usages = []
+        for idx2 in range(len(df_trimmed)):
+            if cores == 1:
+                cpu_usages.append(df_trimmed.iloc[idx2]["core_1"])
+            elif cores == 2:
+                cpu_usages.append(df_trimmed.iloc[idx2]["core_1"] + df_trimmed.iloc[idx2]["core_2"])
+        max_cpu_usage = float(max(cpu_usages))
+        query = {
+            "QPS": df_mcperf_avg.iloc[idx]["QPS"],
+            "max_cpu": max_cpu_usage
+        }
+        data_cpu.append(query)
+    df_avg_cpu = pd.DataFrame(data_cpu)
+    fig = plt.figure(figsize=(16,8))
+    fig_ax = fig.gca()
+    fig_ax2 = fig_ax.twinx()
+    fig_ax.set_xlim(left=0, right=130000)
+    fig_ax.set_xticks(range(0, 130000, 20000), labels=(f"{i}k" for i in range(0,130, 20)))
+    fig_ax.set_xticks(range(0, 130000, 10000))
+    fig_ax.set_ylim(bottom=0, top=2.2)
+    fig_ax.set_yticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0], labels=(f"{i/100}" for i in range(0,220,20)))
+    fig_ax.set_xlabel("Mean Queries per Second (QPS)", fontsize=18, fontweight="semibold", labelpad=10)
+    fig_ax.grid(True)
+    fig_ax.set_ylabel("95% latency (ms)", fontsize=18, fontweight="semibold")
+    lat_plot, = fig_ax.plot(
+        df_mcperf_avg["QPS"],
+        df_mcperf_avg["p95"]/1000,
+        label="95th Percentile Latency (ms)",
+        marker="x",
+        color="tab:blue",
+        markerfacecolor="none",
+    )
+    slo_line, = fig_ax.plot(
+        [0, 130000],
+        [1,1],
+        linestyle=":",
+        label="SLO",
+        color="tab:red",
+        markersize=100
+    )
+    fig_ax2.set_ylabel("CPU Utilization (%)", fontsize=16, fontweight="semibold")
+    if cores == 1:
+        fig_ax2.set_ylim(bottom=0, top=110)
+        fig_ax2.set_yticks(range(0,110,10))
+    elif cores == 2:
+        fig_ax2.set_ylim(bottom=0, top=220)
+        fig_ax2.set_yticks(range(0, 220, 20), labels=(f"{i}" for i in range(0, 220, 20)))
+        fig_ax2.set_yticks(range(0, 220, 10))
+    cpu_plot, = fig_ax2.plot(
+        df_avg_cpu["QPS"],
+        df_avg_cpu["max_cpu"],
+        label="CPU Utilization",
+        marker="o",
+        color="tab:pink",
+        markerfacecolor="none"
+    )
+    fig_ax.legend([lat_plot, cpu_plot, slo_line], ["95th Percentile Latency", "CPU Utilization", "SLO"], loc="lower right", fontsize=20)
+    fig.tight_layout()
+    plt.savefig(f"./part4/results/latest/q1/plots/{cores}_core_plot_max.pdf")
+
+plot_two_run_averages(1)
+plot_two_run_averages(2)
